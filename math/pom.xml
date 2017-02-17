@@ -12,5 +12,15 @@
     <artifactId>math</artifactId>
 
     <name>proeqfa-math</name>
+    
+    <dependencies>
+    
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+        </dependency>
+        
+    </dependencies>
+    
 
 </project>
