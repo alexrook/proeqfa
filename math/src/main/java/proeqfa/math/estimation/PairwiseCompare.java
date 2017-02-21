@@ -1,7 +1,5 @@
 package proeqfa.math.estimation;
 
-import org.apache.commons.math3.linear.RealMatrix;
-
 
 /**
  *
@@ -10,7 +8,5 @@ import org.apache.commons.math3.linear.RealMatrix;
 public class PairwiseCompare {
     
     
-   public RealMatrix getExpectationMatrix(RealMatrix[] marix,OrderNum orderNum){
-       return null;
-   }
+ 
 }
