@@ -7,6 +7,11 @@ import java.util.TreeSet;
  */
 public class ThreeLogicValues extends TreeSet<Float> {
 
+    /*
+        Методика определения критичности...
+        Приложение А
+        Таблица А.1
+     */
     private static ThreeLogicValues view1, view2, view3;
 
     public ThreeLogicValues(float more, float less, float same) {
@@ -20,6 +25,7 @@ public class ThreeLogicValues extends TreeSet<Float> {
         if (view1 != null) {
             return view1;
         } else {
+            /*Таблица А.1*/
             view1 = new ThreeLogicValues(2, 0, 1);
             return view1;
         }
@@ -30,6 +36,7 @@ public class ThreeLogicValues extends TreeSet<Float> {
         if (view2 != null) {
             return view2;
         } else {
+            /*Таблица А.1*/
             view2 = new ThreeLogicValues(1, -1, 0);
             return view2;
         }
@@ -40,6 +47,7 @@ public class ThreeLogicValues extends TreeSet<Float> {
         if (view3 != null) {
             return view2;
         } else {
+            /*Таблица А.1*/
             view3 = new ThreeLogicValues(1, 0, 0.5f);
             return view3;
         }
