@@ -12,34 +12,79 @@ public class PairwiseCompareMatrixTest {
     public PairwiseCompareMatrixTest() {
     }
 
+    @Test
+    public void dummy() {
+
+        float[] a1 = new float[3];
+        assertNotNull(a1[2]);
+        assertEquals(a1[0], 0, 0);
+
+        Float[] a2 = new Float[5];
+        assertNull(a2[1]); //so we need Float[] as data holder for PairwiseCompareMatrix
+        //with null as marker
+    }
+
+    @Test
+    public void testGetEntry() {
+        ThreeLogicValues threeLogic = ThreeLogicValues.getView1();
+        PairwiseCompareMatrix matrix = new PairwiseCompareMatrix(3, ThreeLogicValues.getView1());
+
+        Float ret1 = matrix.getPairwiseCompare(0, 0); //first on diagonal, must be 'same'
+        assertEquals(threeLogic.getSame(), ret1, 0);
+
+        Float ret2 = matrix.getPairwiseCompare(2, 2); //last on diagonal, must be 'same'
+        assertEquals(threeLogic.getSame(), ret2, 0);
+
+        Float ret3 = matrix.getPairwiseCompare(0, 1); //last on diagonal, must be 'same'
+        assertNull(ret3);
+
+    }
+
     /**
      * Test of setOMore method, of class PairwiseCompareMatrix.
      */
-    @Ignore
     @Test
-    public void testSetOMore() {
-        System.out.println("setOMore");
-        int i = 0;
-        int j = 0;
-        PairwiseCompareMatrix instance = null;
+    public void testSetMore() {
+        System.out.println("setMore");
+        ThreeLogicValues threeLogic = ThreeLogicValues.getView1();
+        int i = 1, j = 0;
+
+        PairwiseCompareMatrix instance = new PairwiseCompareMatrix(3, threeLogic);
         instance.setMore(i, j);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        /* for view1 expexted result
+        ╔═══╦═══╦═══╗
+        ║ 1 ║ 0 ║ n ║
+        ║ 2 ║ 1 ║ n ║
+        ║ n ║ n ║ 1 ║
+        ╚═══╩═══╩═══╝
+         */
+        assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(i, j), 0);
+        assertEquals(threeLogic.getLess(), instance.getPairwiseCompare(j, i), 0);
+        printMatrix(instance);
     }
 
     /**
      * Test of setLess method, of class PairwiseCompareMatrix.
      */
-    @Ignore
     @Test
     public void testSetLess() {
         System.out.println("setLess");
-        int i = 0;
-        int j = 0;
-        PairwiseCompareMatrix instance = null;
+        ThreeLogicValues threeLogic = ThreeLogicValues.getView2();
+        int i = 2, j = 1;
+
+        PairwiseCompareMatrix instance = new PairwiseCompareMatrix(3, threeLogic);
         instance.setLess(i, j);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        /* for view2 expexted result
+        ╔═══╦═══╦═══╗
+        ║ 0 ║ n ║ n ║
+        ║ n ║ 0 ║ 1 ║
+        ║ n ║ -1║ 0 ║
+        ╚═══╩═══╩═══╝
+         */
+        assertEquals(threeLogic.getLess(), instance.getPairwiseCompare(i, j), 0);
+        assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(j, i), 0);
+        printMatrix(instance);
+
     }
 
     @Test
@@ -81,7 +126,6 @@ public class PairwiseCompareMatrixTest {
         ║ x ║ n ║ n ║
         ║ x ║ x ║ n ║
         ║ x ║ x ║ x ║
-        ║ x ║ x ║ x ║
         ╚═══╩═══╩═══╝
          */
         int c2 = PairwiseCompareMatrix.getHighEchelonSquareMatrixEntryCount(3);
@@ -102,4 +146,13 @@ public class PairwiseCompareMatrixTest {
 
     }
 
+    private void printMatrix(PairwiseCompareMatrix matrix) {
+        Float[][] array = new Float[matrix.getObjCount()][matrix.getObjCount()];
+        for (int i = 0; i < matrix.getObjCount(); i++) {
+            for (int j = 0; j < matrix.getObjCount(); j++) {
+                array[i][j] = matrix.getPairwiseCompare(i, j);
+            }
+        }
+        TestUtils.printMatrix((Float[][]) array, matrix.getObjCount(), matrix.getObjCount(), System.out);
+    }
 }

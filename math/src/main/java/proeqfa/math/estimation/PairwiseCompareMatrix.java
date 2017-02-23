@@ -5,17 +5,27 @@ package proeqfa.math.estimation;
  */
 public class PairwiseCompareMatrix {
 
-    private final Float[][] data;
+    private final Float[][] data; //see dummy test
     private final ThreeLogicValues logicValues;
-    private int notInitPairCount;
+    private int notInitPairCount, objCount;
 
+    /**
+     *
+     * @param objCount count of object for pairwise compare
+     * @param logicValues three logic values
+     */
     public PairwiseCompareMatrix(int objCount, ThreeLogicValues logicValues) {
         this.data = new Float[objCount][objCount];
         this.logicValues = logicValues;
+        this.objCount = objCount;
         for (int i = 0; i < objCount; i++) {
-            data[i][i] = logicValues.getSame();//set matrix diagonal (always 'same')
+            data[i][i] = logicValues.getSame();//setup matrix diagonal (always 'same')
         }
         notInitPairCount = getHighEchelonSquareMatrixEntryCount(objCount);
+    }
+
+    public Float getPairwiseCompare(int i, int j) {
+        return data[i][j]; //don't worry about backdoor access, Float is immutable
     }
 
     public void setMore(int i, int j) {
@@ -57,6 +67,11 @@ public class PairwiseCompareMatrix {
             throw new IllegalStateException("pair matrix matrix not yet initialized");
         }
         return data;
+    }
+
+   
+    public int getObjCount() {
+        return objCount;
     }
 
     /**
