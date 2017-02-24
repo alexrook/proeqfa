@@ -5,7 +5,6 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 /**
- *
  * @author moroz
  */
 public class PairwiseCompareMatrixTest {

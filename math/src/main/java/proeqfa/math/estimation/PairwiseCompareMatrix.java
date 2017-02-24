@@ -49,6 +49,10 @@ public class PairwiseCompareMatrix {
         data[j][i] = logicValues.getSame();
     }
 
+    public ThreeLogicValues getLogicValues() {
+        return logicValues;
+    }
+
     private void decNotInitPairCount(int i, int j) {
         Float oldValue = data[i][j];
         if (oldValue == null) {
@@ -69,7 +73,6 @@ public class PairwiseCompareMatrix {
         return data;
     }
 
-   
     public int getObjCount() {
         return objCount;
     }
