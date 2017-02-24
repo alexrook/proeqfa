@@ -45,7 +45,7 @@ public class ThreeLogicValues extends TreeSet<Float> {
 
     public static ThreeLogicValues getView3() {
         if (view3 != null) {
-            return view2;
+            return view3;
         } else {
             /*Таблица А.1*/
             view3 = new ThreeLogicValues(1, 0, 0.5f);
