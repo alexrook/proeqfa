@@ -60,7 +60,7 @@ public class PairwiseCompareMatrixTest {
          */
         assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(i, j), 0);
         assertEquals(threeLogic.getLess(), instance.getPairwiseCompare(j, i), 0);
-        printMatrix(instance);
+        TestUtils.printPairwiseMatrix(instance);
     }
 
     /**
@@ -83,7 +83,7 @@ public class PairwiseCompareMatrixTest {
          */
         assertEquals(threeLogic.getLess(), instance.getPairwiseCompare(i, j), 0);
         assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(j, i), 0);
-        printMatrix(instance);
+        TestUtils.printPairwiseMatrix(instance);
 
     }
 
@@ -100,7 +100,7 @@ public class PairwiseCompareMatrixTest {
         ║  n  ║  n  ║ 0.5 ║
         ╚═════╩═════╩═════╝
          */
-        printMatrix(instance);
+        TestUtils.printPairwiseMatrix(instance);
         instance.setLess(i, j);
     }
 
@@ -163,13 +163,4 @@ public class PairwiseCompareMatrixTest {
 
     }
 
-    private void printMatrix(PairwiseCompareMatrix matrix) {
-        Float[][] array = new Float[matrix.getObjCount()][matrix.getObjCount()];
-        for (int i = 0; i < matrix.getObjCount(); i++) {
-            for (int j = 0; j < matrix.getObjCount(); j++) {
-                array[i][j] = matrix.getPairwiseCompare(i, j);
-            }
-        }
-        TestUtils.printMatrix((Float[][]) array, matrix.getObjCount(), matrix.getObjCount(), System.out);
-    }
 }
