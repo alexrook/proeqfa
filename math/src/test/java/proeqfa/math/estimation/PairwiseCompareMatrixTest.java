@@ -35,13 +35,13 @@ public class PairwiseCompareMatrixTest {
         Float ret2 = matrix.getPairwiseCompare(2, 2); //last on diagonal, must be 'same'
         assertEquals(threeLogic.getSame(), ret2, 0);
 
-        Float ret3 = matrix.getPairwiseCompare(0, 1); //last on diagonal, must be 'same'
+        Float ret3 = matrix.getPairwiseCompare(0, 1); //not on diagonal must be null
         assertNull(ret3);
 
     }
 
     /**
-     * Test of setOMore method, of class PairwiseCompareMatrix.
+     * Test of setMore method, of class PairwiseCompareMatrix.
      */
     @Test
     public void testSetMore() {
