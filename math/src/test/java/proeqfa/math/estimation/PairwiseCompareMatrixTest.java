@@ -1,10 +1,10 @@
 package proeqfa.math.estimation;
 
 import org.junit.*;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author moroz
  */
 public class PairwiseCompareMatrixTest {
@@ -85,6 +85,23 @@ public class PairwiseCompareMatrixTest {
         assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(j, i), 0);
         printMatrix(instance);
 
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testSetMoreWithBadVal() {
+        System.out.println("setLess - expected exception");
+        ThreeLogicValues threeLogic = ThreeLogicValues.getView3();
+        int i = 1, j = 1;
+        PairwiseCompareMatrix instance = new PairwiseCompareMatrix(3, threeLogic);
+        /* for view3 expexted result
+        ╔═════╦═════╦═════╗
+        ║ 0.5 ║  n  ║  n  ║
+        ║  n  ║ 0.5 ║  n  ║
+        ║  n  ║  n  ║ 0.5 ║
+        ╚═════╩═════╩═════╝
+         */
+        printMatrix(instance);
+        instance.setLess(i, j);
     }
 
     @Test

@@ -8,7 +8,8 @@ import static org.junit.Assert.*;
  * @author moroz
  */
 public class ThreeLogicValuesTest {
-            /*warn! order is important*/
+
+    /*warn! order is important*/
     float[] VIEW1 = {2, 1, 0},
             VIEW2 = {1, 0, -1},
             VIEW3 = {1, 0.5f, 0};
@@ -55,12 +56,11 @@ public class ThreeLogicValuesTest {
         System.out.println("getView3");
         ThreeLogicValues result = ThreeLogicValues.getView3();
         assertNotNull(result);
-        assertArrayEquals(new float[]{result.getMore(), result.getSame(), result.getLess()},
-                VIEW3, 0);
+        float[] resultValues = {result.getMore(), result.getSame(), result.getLess()};
         assertEquals(result.getMore(), VIEW3[0], 0);
         assertEquals(result.getLess(), VIEW3[2], 0);
         assertEquals(result.getSame(), VIEW3[1], 0);
-
+        assertArrayEquals(resultValues, VIEW3, 0);
     }
 
     /**
