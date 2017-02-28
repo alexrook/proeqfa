@@ -5,7 +5,7 @@ package proeqfa.math.estimation;
  */
 public class EstimationMatrix {
 
-    private final Float[][] data;
+    private final Double[][] data;
     private final ThreeLogicValues logicValues;
     private final int objCount;
     private float totalExperts; //total number of experts (see calculate for "why is float"
@@ -17,7 +17,7 @@ public class EstimationMatrix {
     public EstimationMatrix(int objCount, ThreeLogicValues logicValues) {
         this.objCount = objCount;
         this.logicValues = logicValues;
-        data = new Float[objCount][objCount];
+        data = new Double[objCount][objCount];
         moreDecisionMarix = new int[objCount][objCount];
     }
 
@@ -55,11 +55,11 @@ public class EstimationMatrix {
                //Be careful when performing integer division.  
                //When dividing an integer by an integer, 
                //the answer will be an integer (not rounded)
-                float moreDecision = moreDecisionMarix[i][j];
-                float lessDecision = moreDecisionMarix[j][i];
-                float sameDecision = totalExperts - (moreDecision + lessDecision);
+                double moreDecision = moreDecisionMarix[i][j];
+                double lessDecision = moreDecisionMarix[j][i];
+                double sameDecision = totalExperts - (moreDecision + lessDecision);
 
-                float estimation = logicValues.getMore() * (moreDecision / totalExperts)
+                double estimation = logicValues.getMore() * (moreDecision / totalExperts)
                         + logicValues.getLess() * (lessDecision / totalExperts)
                         + logicValues.getSame() * (sameDecision / totalExperts);
 
@@ -74,7 +74,7 @@ public class EstimationMatrix {
      *
      * @return result matrix
      */
-    public Float[][] getResultMatrix() {
+    public Double[][] getResultMatrix() {
         if (calculated) {
             return this.data;
         } else {

@@ -6,6 +6,8 @@
 package proeqfa.math.estimation;
 
 import java.io.PrintStream;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  *
@@ -13,29 +15,18 @@ import java.io.PrintStream;
  */
 public class TestUtils {
 
-    public static void printMatrix(Float[][] array, int xSize, int ySize, PrintStream out) {
+    public static final NumberFormat N_FORMATER = NumberFormat.getInstance(Locale.US);
 
-        for (int i = 0; i < xSize; i++) {
-            for (int j = 0; j < ySize; j++) {
-                String v = array[i][j] == null ? "n" : Float.toString(array[i][j]);
-                out.append(" ")
-                        .append(v)
-                        .append("  ")
-                        .append("|");
-            }
-            out.append("\n")
-                    //     .append("-")
-                    .append("\n");
-
-        }
+    static {
+        N_FORMATER.setMaximumFractionDigits(3);
+        N_FORMATER.setMinimumFractionDigits(3);
     }
-    
-    
-     public static void printMatrix(int[][] array, int xSize, int ySize, PrintStream out) {
+
+    public static <T extends Number> void printMatrix(T[][] array, int xSize, int ySize, PrintStream out) {
 
         for (int i = 0; i < xSize; i++) {
             for (int j = 0; j < ySize; j++) {
-                String v = array[i][j] == 0 ? "n" : Integer.toString(array[i][j]);
+                String v = array[i][j] == null ? "n" : N_FORMATER.format(array[i][j]);
                 out.append(" ")
                         .append(v)
                         .append("  ")

@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package proeqfa.math.estimation;
 
 import org.junit.*;
-import static org.junit.Assert.*;
 import static java.lang.System.out;
 
 /**
@@ -59,10 +53,12 @@ public class EstimationMatrixTest {
 //        TestUtils.printMatrix(estimationMatrix.moreDecisionMarix, 3, 3, out);
 
         estimationMatrix.calculate();
-        Float[][] ret = estimationMatrix.getResultMatrix();
+        Double[][] ret = estimationMatrix.getResultMatrix();
 
         out.println("---estimation matrix--");
         TestUtils.printMatrix(ret, 3, 3, out);
+        
+        //TODO assertEquals not just matrix print!
 
     }
 
