@@ -20,6 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.jboss.bom>10.1.0.Final</version.jboss.bom>
         <version.apache.commons-math>3.6.1</version.apache.commons-math>
+        <version.apache.commons-lang>3.5</version.apache.commons-lang>
     </properties>
 
     <repositories>
@@ -59,7 +60,13 @@
                 <artifactId>commons-math3</artifactId>
                 <version>${version.apache.commons-math}</version>
             </dependency>
-            
+        
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${version.apache.commons-lang}</version>
+            </dependency>
+        
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
