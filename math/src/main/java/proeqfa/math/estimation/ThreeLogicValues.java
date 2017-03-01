@@ -5,16 +5,16 @@ import java.util.TreeSet;
 /**
  * @author moroz
  */
-public class ThreeLogicValues extends TreeSet<Float> {
+public class ThreeLogicValues extends TreeSet<Double> {
 
     /*
         Методика определения критичности...
         Приложение А
-        Таблица А.1
+        Таблица А.1  
      */
     private static ThreeLogicValues view1, view2, view3;
 
-    public ThreeLogicValues(float more, float less, float same) {
+    public ThreeLogicValues(double more, double less, double same) {
         add(less);
         add(more);
         add(same);
@@ -48,21 +48,21 @@ public class ThreeLogicValues extends TreeSet<Float> {
             return view3;
         } else {
             /*Таблица А.1*/
-            view3 = new ThreeLogicValues(1, 0, 0.5f);
+            view3 = new ThreeLogicValues(1, 0, 0.5d);
             return view3;
         }
 
     }
 
-    public float getMore() {
+    public Double getMore() {
         return last();
     }
 
-    public float getLess() {
+    public Double getLess() {
         return first();
     }
 
-    public float getSame() {
+    public Double getSame() {
         return lower(getMore());
     }
 

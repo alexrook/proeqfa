@@ -3,6 +3,7 @@ package proeqfa.math.estimation;
 import org.junit.*;
 
 import static org.junit.Assert.*;
+import static java.lang.System.*;
 
 /**
  * @author moroz
@@ -15,12 +16,12 @@ public class PairwiseCompareMatrixTest {
     @Test
     public void dummy() {
 
-        float[] a1 = new float[3];
+        double[] a1 = new double[3];
         assertNotNull(a1[2]);
         assertEquals(a1[0], 0, 0);
 
-        Float[] a2 = new Float[5];
-        assertNull(a2[1]); //so we need Float[] as data holder for PairwiseCompareMatrix
+        Double[] a2 = new Double[5];
+        assertNull(a2[1]); //so we need Double[] as data holder for PairwiseCompareMatrix
         //with null as marker
     }
 
@@ -29,13 +30,13 @@ public class PairwiseCompareMatrixTest {
         ThreeLogicValues threeLogic = ThreeLogicValues.getView1();
         PairwiseCompareMatrix matrix = new PairwiseCompareMatrix(3, ThreeLogicValues.getView1());
 
-        Float ret1 = matrix.getPairwiseCompare(0, 0); //first on diagonal, must be 'same'
+        Double ret1 = matrix.getPairwiseCompare(0, 0); //first on diagonal, must be 'same'
         assertEquals(threeLogic.getSame(), ret1, 0);
 
-        Float ret2 = matrix.getPairwiseCompare(2, 2); //last on diagonal, must be 'same'
+        Double ret2 = matrix.getPairwiseCompare(2, 2); //last on diagonal, must be 'same'
         assertEquals(threeLogic.getSame(), ret2, 0);
 
-        Float ret3 = matrix.getPairwiseCompare(0, 1); //not on diagonal must be null
+        Double ret3 = matrix.getPairwiseCompare(0, 1); //not on diagonal must be null
         assertNull(ret3);
 
     }
@@ -60,7 +61,7 @@ public class PairwiseCompareMatrixTest {
          */
         assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(i, j), 0);
         assertEquals(threeLogic.getLess(), instance.getPairwiseCompare(j, i), 0);
-        TestUtils.printPairwiseMatrix(instance);
+        TestUtils.printPairwiseMatrix(instance,out);
     }
 
     /**
@@ -83,7 +84,7 @@ public class PairwiseCompareMatrixTest {
          */
         assertEquals(threeLogic.getLess(), instance.getPairwiseCompare(i, j), 0);
         assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(j, i), 0);
-        TestUtils.printPairwiseMatrix(instance);
+        TestUtils.printPairwiseMatrix(instance,out);
 
     }
 
@@ -100,7 +101,7 @@ public class PairwiseCompareMatrixTest {
         ║  n  ║  n  ║ 0.5 ║
         ╚═════╩═════╩═════╝
          */
-        TestUtils.printPairwiseMatrix(instance);
+        TestUtils.printPairwiseMatrix(instance,out);
         instance.setLess(i, j);
     }
 

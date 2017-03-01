@@ -40,15 +40,15 @@ public class RelativeImportanceVectorTest {
             {(2 / 6d), (5 / 6d), (3 / 6d)}
         };
 
-        TestUtils.printMatrix(estimationMatrix, objCount, objCount, out);
+        TestUtils.printMatrix(estimationMatrix, out);
         RelativeImportanceVector instance = new RelativeImportanceVector(objCount, 0.001);
 
-        instance.calculate(Array2DUtils.toPrimitive(estimationMatrix, objCount, objCount));
+        instance.calculate(Array2DUtils.toPrimitive(estimationMatrix));
+      
         RealMatrix vector = instance.getRelativeImportanceVector();
-        TestUtils.printMatrix(Array2DUtils.toObject(vector.getData(),
-                vector.getRowDimension(),
-                vector.getColumnDimension()), vector.getRowDimension(), vector.getColumnDimension(), out);
-
+        
+        TestUtils.printMatrix(Array2DUtils.toObject(vector.getData()), out);
+        
     }
 
 }

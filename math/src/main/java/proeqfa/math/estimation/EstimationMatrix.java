@@ -29,14 +29,14 @@ public class EstimationMatrix {
             throw new IllegalArgumentException("not supported matrix for this calculation");
         }
 
-        Float[][] matrixData = compareMatrix.getMatrix();
+        Double[][] matrixData = compareMatrix.getMatrix();
 
         totalExperts++;
 
         for (int i = 0; i < objCount; i++) {
             for (int j = 0; j < objCount; j++) {
-                Float expertDecision = matrixData[i][j];
-                if (expertDecision == logicValues.getMore()) {
+                Double expertDecision = matrixData[i][j];
+                if (expertDecision.equals(logicValues.getMore())) {
                     int old = moreDecisionMarix[i][j];
                     int naw = old + 1;
                     moreDecisionMarix[i][j] = naw;

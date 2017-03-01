@@ -5,7 +5,7 @@ package proeqfa.math.estimation;
  */
 public class PairwiseCompareMatrix {
 
-    private final Float[][] data; //see dummy test
+    private final Double[][] data; //see dummy test
     private final ThreeLogicValues logicValues;
     private int notInitPairCount, objCount;
 
@@ -15,7 +15,7 @@ public class PairwiseCompareMatrix {
      * @param logicValues three logic values
      */
     public PairwiseCompareMatrix(int objCount, ThreeLogicValues logicValues) {
-        this.data = new Float[objCount][objCount];
+        this.data = new Double[objCount][objCount];
         this.logicValues = logicValues;
         this.objCount = objCount;
         for (int i = 0; i < objCount; i++) {
@@ -24,7 +24,7 @@ public class PairwiseCompareMatrix {
         notInitPairCount = getHighEchelonSquareMatrixEntryCount(objCount);
     }
 
-    public Float getPairwiseCompare(int i, int j) {
+    public Double getPairwiseCompare(int i, int j) {
         return data[i][j]; //don't worry about backdoor access, Float is immutable
     }
 
@@ -54,7 +54,7 @@ public class PairwiseCompareMatrix {
     }
 
     private void decNotInitPairCount(int i, int j) {
-        Float oldValue = data[i][j];
+        Double oldValue = data[i][j];
         if (oldValue == null) {
             notInitPairCount--;
         }
@@ -66,7 +66,7 @@ public class PairwiseCompareMatrix {
         }
     }
 
-    public Float[][] getMatrix() throws IllegalStateException {
+    public Double[][] getMatrix() throws IllegalStateException {
         if (notInitPairCount != 0) {
             throw new IllegalStateException("pair matrix matrix not yet initialized");
         }
