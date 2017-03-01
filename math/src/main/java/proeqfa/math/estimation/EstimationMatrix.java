@@ -8,7 +8,7 @@ public class EstimationMatrix {
     private final Double[][] data;
     private final ThreeLogicValues logicValues;
     private final int objCount;
-    private float totalExperts; //total number of experts (see calculate for "why is float"
+    private double totalExperts; //total number of experts (see calculate for "why is double"
     /*TODO: protected only for tests */
     protected final int[][] moreDecisionMarix; //matrix for 'setMore' decision
 
