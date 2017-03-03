@@ -5,7 +5,7 @@ package proeqfa.math.estimation;
  */
 public class EstimationMatrix {
 
-    private final Double[][] data;
+    private final double[][] data;
     private final ThreeLogicValues logicValues;
     private final int objCount;
     private double totalExperts; //total number of experts (see calculate for "why is double"
@@ -17,7 +17,7 @@ public class EstimationMatrix {
     public EstimationMatrix(int objCount, ThreeLogicValues logicValues) {
         this.objCount = objCount;
         this.logicValues = logicValues;
-        data = new Double[objCount][objCount];
+        data = new double[objCount][objCount];
         moreDecisionMarix = new int[objCount][objCount];
     }
 
@@ -74,7 +74,7 @@ public class EstimationMatrix {
      *
      * @return result matrix
      */
-    public Double[][] getResultMatrix() {
+    public double[][] getResultMatrix() {
         if (calculated) {
             return this.data;
         } else {

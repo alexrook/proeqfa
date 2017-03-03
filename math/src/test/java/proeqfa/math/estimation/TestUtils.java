@@ -30,11 +30,37 @@ public class TestUtils {
 
     }
 
+    public static void assert2DArrayEquals(double[][] expecteds, double[][] actuals, double delta) {
+
+        assertEquals(expecteds.length, actuals.length);
+
+        for (int i = 0; i < expecteds.length; i++) {
+            assertArrayEquals(expecteds[i], actuals[i], delta);
+        }
+
+    }
+
     public static <T extends Number> void printMatrix(T[][] array, PrintStream out) {
 
         for (T[] row : array) {
             for (T val : row) {
                 String v = val == null ? "n" : N_FORMATER.format(val);
+                out.append(" ")
+                        .append(v)
+                        .append("  ")
+                        .append("|");
+            }
+            out.append("\n")
+                    //     .append("-")
+                    .append("\n");
+        }
+    }
+
+    public static void printMatrix(double[][] array, PrintStream out) {
+
+        for (double[] row : array) {
+            for (double val : row) {
+                String v = N_FORMATER.format(val);
                 out.append(" ")
                         .append(v)
                         .append("  ")
@@ -72,18 +98,40 @@ public class TestUtils {
         printMatrix(array, out);
     }
 
+    public static void printPairwiseMatrixHumanFriendly(PairwiseCompareMatrix matrix, ThreeLogicValues logicValues, PrintStream out) {
+        Double[][] m = matrix.getMatrix();
+        for (Double[] row : m) {
+            for (Double val : row) {
+                String v = "error";
+                if (val.equals(logicValues.getSame())) {
+                    v = "=";
+                } else if (val.equals(logicValues.getMore())) {
+                    v = ">";
+                } else if (val.equals(logicValues.getLess())) {
+                    v = "<";
+                }
+                out.append(" ")
+                        .append(v)
+                        .append("|");
+            }
+            out.append("\n")
+                    //     .append("-")
+                    .append("\n");
+        }
+    }
+
     public static PairwiseCompareMatrix createFromHighEchelonArray(Double[][] array, ThreeLogicValues logicValues) {
 
-        PairwiseCompareMatrix ret = new PairwiseCompareMatrix(array.length+1, logicValues);
+        PairwiseCompareMatrix ret = new PairwiseCompareMatrix(array.length + 1, logicValues);
         for (int i = 0; i < array.length; i++) {
-            for (int j =0; j < array[i].length; j++) {
+            for (int j = 0; j < array[i].length; j++) {
                 Double val = array[i][j];
                 if (val.equals(logicValues.getLess())) {
-                    ret.setLess(i, j+i+1);
+                    ret.setLess(i, j + i + 1);
                 } else if (val.equals(logicValues.getMore())) {
-                    ret.setMore(i, j+i+1);
+                    ret.setMore(i, j + i + 1);
                 } else if (val.equals(logicValues.getSame())) {
-                    ret.setSame(i, j+i+1);
+                    ret.setSame(i, j + i + 1);
                 } else {
                     throw new IllegalArgumentException("unsupported logic value in given array");
                 }

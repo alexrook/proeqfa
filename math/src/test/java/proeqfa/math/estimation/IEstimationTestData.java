@@ -15,7 +15,7 @@ public interface IEstimationTestData {
 
     List<Double[][]> getPairwiseCompareHighEchelonArrays();
 
-    Double[][] getExpectedEstimationMatrix();
+    double[][] getExpectedEstimationMatrix();
 
 }
 

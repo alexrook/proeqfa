@@ -6,6 +6,7 @@ import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
 import static proeqfa.math.estimation.TestUtils.*;
+import proeqfa.math.estimation.u.*;
 
 /**
  *
@@ -48,8 +49,8 @@ public class EstimationMatrixTest {
             }
 
             @Override
-            public Double[][] getExpectedEstimationMatrix() {
-                return new Double[][]{
+            public double[][] getExpectedEstimationMatrix() {
+                return new double[][]{
                     {(3 / 6d), (5 / 6d), (4 / 6d)},
                     {(1 / 6d), (3 / 6d), (1 / 6d)},
                     {(2 / 6d), (5 / 6d), (3 / 6d)}
@@ -69,6 +70,8 @@ public class EstimationMatrixTest {
         };
 
         testDataList.add(docData);
+        //   testDataList.add(new LavRelativeImportanceVectorTestData01());
+        testDataList.add(new LavRelativeImportanceVectorTestData03());
 
     }
 
@@ -96,9 +99,9 @@ public class EstimationMatrixTest {
                 estimationMatrix.addPairwiseCompare(m);
             }
             estimationMatrix.calculate();
-            Double[][] actual = estimationMatrix.getResultMatrix();
+            double[][] actual = estimationMatrix.getResultMatrix();
 
-            assert2DArrayEquals(testData.getExpectedEstimationMatrix(),actual, 0.0000000001);
+            assert2DArrayEquals(testData.getExpectedEstimationMatrix(), actual, 0.0000000001);
 
         }
 
@@ -145,9 +148,9 @@ public class EstimationMatrixTest {
         // TestUtils.printMatrix(estimationMatrix.moreDecisionMarix, out);
 
         estimationMatrix.calculate();
-        Double[][] ret = estimationMatrix.getResultMatrix();
+        double[][] ret = estimationMatrix.getResultMatrix();
 
-        Double[][] expectedEstimationMatrix = {
+        double[][] expectedEstimationMatrix = {
             {(3 / 6d), (5 / 6d), (4 / 6d)},
             {(1 / 6d), (3 / 6d), (1 / 6d)},
             {(2 / 6d), (5 / 6d), (3 / 6d)}
