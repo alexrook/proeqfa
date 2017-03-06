@@ -30,7 +30,7 @@ public class RelativeImportanceVectorTest {
 
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testLambda01() {
 
         List<Double[][]> pairM = new ArrayList<>();
@@ -51,7 +51,7 @@ public class RelativeImportanceVectorTest {
         EstimationMatrix eM = new EstimationMatrix(3, ThreeLogicValues.getView2());
         for (Double[][] matrixD : pairM) {
             PairwiseCompareMatrix m = TestUtils.createFromHighEchelonArray(matrixD, ThreeLogicValues.getView2());
-         //   TestUtils.printPairwiseMatrixHumanFriendly(m, ThreeLogicValues.getView2(), out);
+            //   TestUtils.printPairwiseMatrixHumanFriendly(m, ThreeLogicValues.getView2(), out);
             eM.addPairwiseCompare(m);
         }
         eM.calculate();
@@ -65,7 +65,7 @@ public class RelativeImportanceVectorTest {
 
         instance.calculate(actual);
         TestUtils.printMatrix(instance.getRelativeImportanceVector().getData(), out);
-      
+
     }
 
     @Test
@@ -90,7 +90,7 @@ public class RelativeImportanceVectorTest {
         EstimationMatrix eM = new EstimationMatrix(3, ThreeLogicValues.getView3());
         for (Double[][] matrixD : pairM) {
             PairwiseCompareMatrix m = TestUtils.createFromHighEchelonArray(matrixD, ThreeLogicValues.getView3());
-       //     TestUtils.printPairwiseMatrixHumanFriendly(m, ThreeLogicValues.getView3(), out);
+            //     TestUtils.printPairwiseMatrixHumanFriendly(m, ThreeLogicValues.getView3(), out);
             eM.addPairwiseCompare(m);
         }
         eM.calculate();
@@ -103,7 +103,7 @@ public class RelativeImportanceVectorTest {
 
         instance.calculate(actual);
         TestUtils.printMatrix(instance.getRelativeImportanceVector().getData(), out);
-     
+
     }
 
     @Test
@@ -128,7 +128,7 @@ public class RelativeImportanceVectorTest {
         EstimationMatrix eM = new EstimationMatrix(3, ThreeLogicValues.getView1());
         for (Double[][] matrixD : pairM) {
             PairwiseCompareMatrix m = TestUtils.createFromHighEchelonArray(matrixD, ThreeLogicValues.getView1());
-       //     TestUtils.printPairwiseMatrixHumanFriendly(m, ThreeLogicValues.getView1(), out);
+            //     TestUtils.printPairwiseMatrixHumanFriendly(m, ThreeLogicValues.getView1(), out);
             eM.addPairwiseCompare(m);
         }
         eM.calculate();
@@ -141,12 +141,11 @@ public class RelativeImportanceVectorTest {
 
         instance.calculate(actual);
         TestUtils.printMatrix(instance.getRelativeImportanceVector().getData(), out);
-      
+
     }
-  
-    @Ignore
+
     @Test
-    public void userTestsCalculate() {
+    public void userTestsCalculate01() {
         for (IRelativeImportanceVectorTestData testData : testDataList) {
 
             EstimationMatrix eM = new EstimationMatrix(testData.getObjCount(), testData.getLogicValues());
@@ -171,10 +170,42 @@ public class RelativeImportanceVectorTest {
 
     }
 
+    @Test
+    public void userTestsCalculate02() {
+        for (IRelativeImportanceVectorTestData testData : testDataList) {
+
+            ThreeLogicValues newValues
+                    = testData.getLogicValues().equals(ThreeLogicValues.getView3())
+                    ? ThreeLogicValues.getView1() : ThreeLogicValues.getView3();
+
+            EstimationMatrix eM = new EstimationMatrix(testData.getObjCount(),
+                    newValues);
+
+            for (Double[][] matrixD : testData.getPairwiseCompareHighEchelonArrays()) {
+                PairwiseCompareMatrix m = TestUtils.createFromHighEchelonArray(matrixD, testData.getLogicValues());
+                PairwiseCompareMatrix n = TestUtils.toOtherLogicValues(m, newValues);
+                eM.addPairwiseCompare(n);
+            }
+            
+            eM.calculate();
+            double[][] actual = eM.getResultMatrix();
+          //  TestUtils.printMatrix(actual, out);
+            
+            RelativeImportanceVector instance
+                    = new RelativeImportanceVector(testData.getObjCount(), testData.getEvaluationRate());
+           
+            instance.calculate(eM.getResultMatrix());
+            TestUtils.printMatrix(instance.getRelativeImportanceVector().getData(), out);
+            assert2DArrayEquals(testData.getExpectedRelativeImportanceVector().getData(),
+                    instance.getRelativeImportanceVector().getData(), 0.05);
+
+        }
+
+    }
+
     /**
      * Test of getEarray method, of class RelativeImportanceVector.
      */
-    @Ignore
     @Test
     public void testGetEarray() {
         System.out.println("getEarray");
@@ -186,7 +217,6 @@ public class RelativeImportanceVectorTest {
     /**
      * Test of calculate method, of class RelativeImportanceVector.
      */
-    @Ignore
     @Test
     public void testCalculate() {
         System.out.println("calculate");

@@ -9,4 +9,6 @@ public interface IRelativeImportanceVectorTestData extends IEstimationTestData {
 
     public RealMatrix getExpectedRelativeImportanceVector();
     public double getEvaluationRate();
+     
+    
 }

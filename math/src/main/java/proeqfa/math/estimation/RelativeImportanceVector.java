@@ -1,6 +1,7 @@
 package proeqfa.math.estimation;
 
 import java.util.Arrays;
+import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 
@@ -34,9 +35,9 @@ public class RelativeImportanceVector {
 
         final RealMatrix X = MatrixUtils.createRealMatrix(estimationMatrix);
 
-        if ((X.getColumnDimension() != objCount) || (X.getRowDimension() != objCount)) {
-            throw new IllegalArgumentException("estimation matrix has unapporiate size");
-        }
+        checkMatrix(X);
+
+        K = zero_K;
 
         final RealMatrix Earray = MatrixUtils.createRowRealMatrix(getEarray(objCount));
 
@@ -49,17 +50,45 @@ public class RelativeImportanceVector {
             RealMatrix Y = X.multiply(Kold);
 
             RealMatrix lambdaM = Earray.multiply(Y);
-            assert (lambdaM.getRowDimension() == 1);
-            assert (lambdaM.getColumnDimension() == 1);
+            assert lambdaM.getRowDimension() == 1;
+            assert lambdaM.getColumnDimension() == 1;
             double lambda = lambdaM.getEntry(0, 0);
-
+            if (lambda == 0) {
+                throw new IllegalArgumentException("the algorithm does not converge,"
+                        + "check that the matrix is irreducible");
+            }
             K = Y.scalarMultiply(1 / lambda);
-//TODO спросить в приложении А вычитается и проверятся К2-К1 (К0 не вычитается) 
+
             RealMatrix Minus = K.subtract(Kold);
 
             absMMax = getAbsMax(Minus);
         } while (absMMax >= evaluationRate);
 
+    }
+
+    public void checkMatrix(RealMatrix X) {
+
+        if ((X.getColumnDimension() != objCount) || (X.getRowDimension() != objCount)) {
+            throw new IllegalArgumentException("estimation matrix has unapporiate size");
+        }
+
+        for (int i = 0; i < X.getRowDimension(); i++) {
+            for (int j = 0; j < X.getColumnDimension(); j++) {
+                double e = X.getEntry(i, j);
+                if (e < 0) {
+                    throw new IllegalArgumentException("estimation matrix must be nonnegative");
+                }
+            }
+        }
+
+//        LUDecomposition lu = new LUDecomposition(X);
+//
+//        double det = lu.getDeterminant();
+//
+//        if (det == 0d) {//Если две (или несколько) строки (столбца) 
+//            //матрицы линейно зависимы, то её определитель равен нулю
+//            throw new IllegalArgumentException("estimation matrix must be irreducible");
+//        }
     }
 
     private double getAbsMax(RealMatrix M) {

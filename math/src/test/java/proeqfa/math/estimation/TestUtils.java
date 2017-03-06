@@ -142,4 +142,31 @@ public class TestUtils {
         return ret;
 
     }
+
+    public static PairwiseCompareMatrix toOtherLogicValues(PairwiseCompareMatrix matrix, ThreeLogicValues other) {
+
+        final PairwiseCompareMatrix ret = new PairwiseCompareMatrix(matrix.getObjCount(), other);
+
+        final ThreeLogicValues oldValues = matrix.getLogicValues();
+
+        for (int i = 0; i < matrix.getObjCount(); i++) {
+            for (int j = 0; j < matrix.getObjCount(); j++) {
+                if (i != j) {
+                    Double val = matrix.getPairwiseCompare(i, j);
+                    if (val.equals(oldValues.getLess())) {
+                        ret.setLess(i, j);
+                    } else if (val.equals(oldValues.getMore())) {
+                        ret.setMore(i, j);
+                    } else if (val.equals(oldValues.getSame())) {
+                        ret.setSame(i, j);
+                    } else {
+                        throw new IllegalArgumentException("unsupported logic value in given matrix");
+                    }
+                }
+            }
+        }
+
+        return ret;
+
+    }
 }
