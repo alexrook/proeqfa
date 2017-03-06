@@ -25,7 +25,7 @@ public class PairwiseCompareMatrix {
     }
 
     public Double getPairwiseCompare(int i, int j) {
-        return data[i][j]; //don't worry about backdoor access, Float is immutable
+        return data[i][j]; //don't worry about backdoor access, Double is immutable
     }
 
     public void setMore(int i, int j) {
