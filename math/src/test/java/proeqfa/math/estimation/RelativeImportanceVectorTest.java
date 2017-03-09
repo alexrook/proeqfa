@@ -194,7 +194,7 @@ public class RelativeImportanceVectorTest {
             RelativeImportanceVector instance
                     = new RelativeImportanceVector(testData.getObjCount(), testData.getEvaluationRate());
            
-            instance.calculate(eM.getResultMatrix());
+            instance.calculate(actual);
             TestUtils.printMatrix(instance.getRelativeImportanceVector().getData(), out);
             assert2DArrayEquals(testData.getExpectedRelativeImportanceVector().getData(),
                     instance.getRelativeImportanceVector().getData(), 0.05);
