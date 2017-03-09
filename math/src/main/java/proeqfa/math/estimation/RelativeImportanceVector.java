@@ -1,9 +1,9 @@
 package proeqfa.math.estimation;
 
 import java.util.Arrays;
-import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
+//import proeqfa.math.commons.MUtils;
 
 /**
  * @author moroz
@@ -81,9 +81,7 @@ public class RelativeImportanceVector {
             }
         }
 
-//        LUDecomposition lu = new LUDecomposition(X);
-//
-//        double det = lu.getDeterminant();
+//        double det = MUtils.determinant(X);
 //
 //        if (det == 0d) {//Если две (или несколько) строки (столбца) 
 //            //матрицы линейно зависимы, то её определитель равен нулю
