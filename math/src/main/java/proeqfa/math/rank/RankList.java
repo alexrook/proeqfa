@@ -31,6 +31,18 @@ public class RankList {
             this.id = id;
         }
 
+        @Override
+        public String toString() {
+            switch (id) {
+                case 1:
+                    return "~";
+                case 2:
+                    return ">";
+                default:
+                    throw new IllegalArgumentException("unsupported RankedObjectsLink value");
+            }
+        }
+
     }
 
     public static class RankedObject {
@@ -69,6 +81,11 @@ public class RankList {
             this.nextRankedObject = nextRankedObject;
         }
 
+        public void setNextRankedObject(RankedObject nextRankedObject, RankedObjectsLink link) {
+            setNextRankedObject(nextRankedObject);
+            setLink(link);
+        }
+
         public int getRankedObjectId() {
             return this.id;
         }
@@ -80,8 +97,11 @@ public class RankList {
         public void setRank(double rank) {
             this.rank = rank;
         }
-        
-        
+
+        @Override
+        public String toString() {
+            return "O" + id + "(" + rank + ")" + link;
+        }
 
     }
 
@@ -102,20 +122,37 @@ public class RankList {
             }
 
         }
+        ret.rankedObjectOrderedChain.add(old);
 
         return ret;
 
     }
-    
-    public double[] toRankedObjectVector(){
-        double[] ret=new double[this.rankedObjectOrderedChain.size()];
-        
-        for(RankedObject item:this.rankedObjectOrderedChain){
-            ret[item.id-1]=item.rank;
+
+    public double[] toRankedObjectVector() {
+        double[] ret = new double[this.rankedObjectOrderedChain.size()];
+
+        for (RankedObject item : this.rankedObjectOrderedChain) {
+            ret[item.id - 1] = item.rank;
         }
-        
+
         return ret;
-  
+
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder buf = new StringBuilder("RankList{ ");
+        for (RankedObject o : rankedObjectOrderedChain) {
+            buf.append(o);
+            buf.append(" ");
+        }
+        return buf.append("}").toString();
+    }
+    
+    
+    
+    public int size(){
+        return this.rankedObjectOrderedChain.size();
     }
 
 }
