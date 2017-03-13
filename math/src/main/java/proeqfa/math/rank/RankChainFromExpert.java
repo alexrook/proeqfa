@@ -1,16 +1,18 @@
 package proeqfa.math.rank;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * @author moroz
  */
-public class RankList {
+public class RankChainFromExpert {
 
     public static enum RankedObjectsLink {
 
-        MORE(2), SAME(1);
+        MORE(2), SAME(1), NIL(-1);
 
         private final int id;
 
@@ -21,6 +23,8 @@ public class RankList {
                     return SAME;
                 case 2:
                     return MORE;
+                case -1:
+                    return NIL;
                 default:
                     throw new IllegalArgumentException("unsupported RankedObjectsLink value");
             }
@@ -38,9 +42,24 @@ public class RankList {
                     return "~";
                 case 2:
                     return ">";
+                case -1:
+                    return "";
                 default:
                     throw new IllegalArgumentException("unsupported RankedObjectsLink value");
             }
+        }
+
+    }
+
+    public static void main(String[] args) {
+
+        List<String> aaa = new LinkedList<>();
+
+        aaa.addAll(Arrays.asList(new String[]{"aaa", "bbb", "ccc"}));
+
+        ListIterator<String> li = aaa.listIterator(aaa.size() - 1);
+        while (li.hasPrevious()) {
+            System.out.println(li.previous());
         }
 
     }
@@ -50,8 +69,7 @@ public class RankList {
         private final int id;
         private int position;
         private double rank;
-        private RankedObjectsLink link = RankedObjectsLink.MORE;
-        private RankedObject nextRankedObject = null;
+        private RankedObjectsLink relToPreviosObject = RankedObjectsLink.NIL;
 
         public RankedObject(int id) {
             this.id = id;
@@ -61,29 +79,12 @@ public class RankList {
             return position;
         }
 
-        public void setPosition(int pos) {
-            this.position = pos;
+        public RankedObjectsLink getPreviosObjectRel() {
+            return relToPreviosObject;
         }
 
-        public RankedObjectsLink getLink() {
-            return link;
-        }
-
-        public void setLink(RankedObjectsLink link) {
-            this.link = link;
-        }
-
-        public RankedObject getNextRankedObject() {
-            return nextRankedObject;
-        }
-
-        public void setNextRankedObject(RankedObject nextRankedObject) {
-            this.nextRankedObject = nextRankedObject;
-        }
-
-        public void setNextRankedObject(RankedObject nextRankedObject, RankedObjectsLink link) {
-            setNextRankedObject(nextRankedObject);
-            setLink(link);
+        public void setPreviosObjectRel(RankedObjectsLink link) {
+            this.relToPreviosObject = link;
         }
 
         public int getRankedObjectId() {
@@ -100,29 +101,26 @@ public class RankList {
 
         @Override
         public String toString() {
-            return "O" + id + "(" + rank + ")" + link;
+            return relToPreviosObject + " O" + id + "(" + rank + ")";
         }
 
     }
 
     private final List<RankedObject> rankedObjectOrderedChain = new LinkedList();
 
-    public static RankList fromArray(RankedObject[] rankedObjectOrderedArray) {
-        RankList ret = new RankList();
+    private double expertCompetenceFactor = 1;
 
-        RankedObject old = null;
+    private IPosition2Rank position2Rank;
+
+    public static RankChainFromExpert fromArray(RankedObject[] rankedObjectOrderedArray,
+            IPosition2Rank position2RankImpl) {
+
+        RankChainFromExpert ret = new RankChainFromExpert();
+        ret.setPosition2Rank(position2RankImpl);
 
         for (RankedObject ro : rankedObjectOrderedArray) {
-            if (old == null) {
-                old = ro;
-            } else {
-                old.setNextRankedObject(ro);
-                ret.rankedObjectOrderedChain.add(old);
-                old = ro;
-            }
-
+            ret.addHead(ro);
         }
-        ret.rankedObjectOrderedChain.add(old);
 
         return ret;
 
@@ -148,11 +146,76 @@ public class RankList {
         }
         return buf.append("}").toString();
     }
-    
-    
-    
-    public int size(){
+
+    public double getExpertCompetenceFactor() {
+        return expertCompetenceFactor;
+    }
+
+    public void setExpertCompetenceFactor(double expertCompetenceFactor) {
+        this.expertCompetenceFactor = expertCompetenceFactor;
+    }
+
+    public void addHead(RankedObject obj) {
+
+        double rank = position2Rank.getRankForPosition(rankedObjectOrderedChain.size() + 1);
+
+        switch (obj.relToPreviosObject) {
+            case MORE: {
+                obj.setRank(rank);
+                rankedObjectOrderedChain.add(obj);
+                break;
+            }
+            case SAME: {
+                obj.setRank(rank);//fake rank for start calcualtion
+                rankedObjectOrderedChain.add(obj);
+                List<RankedObject> tailList = getTailList(rankedObjectOrderedChain.size());
+                if (tailList != null) {
+                    ListIterator<RankedObject> tailIterator = tailList.listIterator(tailList.size());
+                    setRankRecursive(tailIterator, 0, 0);
+                }
+                break;
+            }
+            default: {
+                if (rankedObjectOrderedChain.isEmpty()) {
+                    obj.setRank(rank);
+                    rankedObjectOrderedChain.add(obj);
+                } else {
+                    throw new IllegalArgumentException("non fisrt object must have a link to previos object");
+                }
+            }
+        }
+
+    }
+
+    private double setRankRecursive(ListIterator<RankedObject> tail, int counter, double rankSum) {
+        RankedObject ro = tail.previous();
+        if (ro.getPreviosObjectRel() == RankedObjectsLink.SAME) {
+            counter++;
+            rankSum += ro.getRank();
+            ro.setRank(setRankRecursive(tail, counter, rankSum));
+            return ro.getRank();
+        }
+        rankSum += ro.getRank();
+        counter++;
+        double rank = rankSum / counter;
+        ro.setRank(rank);
+        return rank;
+    }
+
+    private List<RankedObject> getTailList(int headStart) {
+        return rankedObjectOrderedChain.subList(0, headStart);
+    }
+
+    public int size() {
         return this.rankedObjectOrderedChain.size();
+    }
+
+    public IPosition2Rank getPosition2Rank() {
+        return position2Rank;
+    }
+
+    public void setPosition2Rank(IPosition2Rank position2Rank) {
+        this.position2Rank = position2Rank;
     }
 
 }
