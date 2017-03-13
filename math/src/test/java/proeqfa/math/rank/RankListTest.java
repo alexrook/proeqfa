@@ -108,8 +108,8 @@ public class RankListTest {
 
     public static double[] getRankVector(RankList.RankedObject[] rankedObjects) {
         double[] ret = new double[rankedObjects.length];
-        for (int i = 0; i < rankedObjects.length; i++) {
-            ret[rankedObjects[i].getRankedObjectId() - 1] = rankedObjects[i].getRank();
+        for (RankList.RankedObject rankedObject : rankedObjects) {
+            ret[rankedObject.getRankedObjectId() - 1] = rankedObject.getRank();
         }
         return ret;
     }
