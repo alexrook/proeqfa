@@ -5,6 +5,6 @@ package proeqfa.math.rank;
  */
 public interface IPosition2Rank {
 
-    int getRankForPosition(int position);
+    double getRankForPosition(int position);
     
 }

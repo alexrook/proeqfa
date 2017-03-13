@@ -6,7 +6,7 @@ package proeqfa.math.rank;
 public class NaturalOrderPosition2Rank implements IPosition2Rank {
 
     @Override
-    public int getRankForPosition(int position) {
+    public double getRankForPosition(int position) {
         if (position>0) {
 	    return position;
 	} else {
