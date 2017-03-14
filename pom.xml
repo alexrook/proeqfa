@@ -21,6 +21,8 @@
         <version.jboss.bom>10.1.0.Final</version.jboss.bom>
         <version.apache.commons-math>3.6.1</version.apache.commons-math>
         <version.apache.commons-lang>3.5</version.apache.commons-lang>
+   
+        <netbeans.compile.on.save>none</netbeans.compile.on.save>
     </properties>
 
     <repositories>

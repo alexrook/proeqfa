@@ -14,6 +14,10 @@
 
     <name>proeqfa-math</name>
     
+    <properties>
+        <netbeans.compile.on.save>none</netbeans.compile.on.save>
+    </properties>
+    
     <dependencies>
     
         <dependency>

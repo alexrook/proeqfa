@@ -31,6 +31,19 @@ public class RankChainFromExpert {
 
         }
 
+        public static RankedObjectsLink fromString(String ch) {
+
+            switch (ch) {
+                case "~":
+                    return SAME;
+                case ">":
+                    return MORE;
+                default:
+                    throw new IllegalArgumentException("unsupported RankedObjectsLink value");
+            }
+
+        }
+
         RankedObjectsLink(int id) {
             this.id = id;
         }
@@ -113,7 +126,7 @@ public class RankChainFromExpert {
     private IPosition2Rank position2Rank;
 
     public static RankChainFromExpert fromArray(RankedObject[] rankedObjectOrderedArray,
-            IPosition2Rank position2RankImpl) {
+                                                IPosition2Rank position2RankImpl) {
 
         RankChainFromExpert ret = new RankChainFromExpert();
         ret.setPosition2Rank(position2RankImpl);
