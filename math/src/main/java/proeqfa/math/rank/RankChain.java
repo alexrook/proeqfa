@@ -10,7 +10,7 @@ import java.util.ListIterator;
  */
 public class RankChain {
 
-    public static enum RankedObjectsLink {
+    public enum RankedObjectsLink {
 
         MORE(2), SAME(1), NIL(-1);
 
@@ -38,6 +38,8 @@ public class RankChain {
                     return SAME;
                 case ">":
                     return MORE;
+                case "":
+                    return NIL;
                 default:
                     throw new IllegalArgumentException("unsupported RankedObjectsLink value");
             }
@@ -80,16 +82,11 @@ public class RankChain {
     public static class RankedObject {
 
         private final int id;
-        private int position;
         private double rank;
         private RankedObjectsLink relToPreviosObject = RankedObjectsLink.NIL;
 
         public RankedObject(int id) {
             this.id = id;
-        }
-
-        public int getPosition() {
-            return position;
         }
 
         public RankedObjectsLink getPreviosObjectRel() {
@@ -119,7 +116,7 @@ public class RankChain {
 
     }
 
-    private final List<RankedObject> rankedObjectOrderedChain = new LinkedList();
+    private final List<RankedObject> rankedChain = new LinkedList();
 
     private double expertCompetenceFactor = 1;
 
@@ -140,9 +137,9 @@ public class RankChain {
     }
 
     public double[] toRankedObjectVector() {
-        double[] ret = new double[this.rankedObjectOrderedChain.size()];
+        double[] ret = new double[this.rankedChain.size()];
 
-        for (RankedObject item : this.rankedObjectOrderedChain) {
+        for (RankedObject item : this.rankedChain) {
             ret[item.id - 1] = item.rank;
         }
 
@@ -152,8 +149,8 @@ public class RankChain {
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder("RankList{ ");
-        for (RankedObject o : rankedObjectOrderedChain) {
+        StringBuilder buf = new StringBuilder("RankChain{ ");
+        for (RankedObject o : rankedChain) {
             buf.append(o);
             buf.append(" ");
         }
@@ -170,18 +167,18 @@ public class RankChain {
 
     public void addHead(RankedObject obj) {
 
-        double rank = position2Rank.getRankForPosition(rankedObjectOrderedChain.size() + 1);
+        double rank = position2Rank.getRankForPosition(rankedChain.size() + 1);
 
         switch (obj.relToPreviosObject) {
             case MORE: {
                 obj.setRank(rank);
-                rankedObjectOrderedChain.add(obj);
+                rankedChain.add(obj);
                 break;
             }
             case SAME: {
-                obj.setRank(rank);//fake rank for start calcualtion
-                rankedObjectOrderedChain.add(obj);
-                List<RankedObject> tailList = getTailList(rankedObjectOrderedChain.size());
+                obj.setRank(rank);//fake rank for start calc
+                rankedChain.add(obj);
+                List<RankedObject> tailList = getTailList(rankedChain.size());
                 if (tailList != null) {
                     ListIterator<RankedObject> tailIterator = tailList.listIterator(tailList.size());
                     setRankRecursive(tailIterator, 0, 0);
@@ -189,9 +186,9 @@ public class RankChain {
                 break;
             }
             default: {
-                if (rankedObjectOrderedChain.isEmpty()) {
+                if (rankedChain.isEmpty()) {
                     obj.setRank(rank);
-                    rankedObjectOrderedChain.add(obj);
+                    rankedChain.add(obj);
                 } else {
                     throw new IllegalArgumentException("non fisrt object must have a link to previos object");
                 }
@@ -201,26 +198,28 @@ public class RankChain {
     }
 
     private double setRankRecursive(ListIterator<RankedObject> tail, int counter, double rankSum) {
+
         RankedObject ro = tail.previous();
+
+        rankSum += ro.getRank();
+        counter++;
+
         if (ro.getPreviosObjectRel() == RankedObjectsLink.SAME) {
-            counter++;
-            rankSum += ro.getRank();
             ro.setRank(setRankRecursive(tail, counter, rankSum));
             return ro.getRank();
         }
-        rankSum += ro.getRank();
-        counter++;
+
         double rank = rankSum / counter;
         ro.setRank(rank);
-        return rank;
+        return ro.getRank();
     }
 
     private List<RankedObject> getTailList(int headStart) {
-        return rankedObjectOrderedChain.subList(0, headStart);
+        return rankedChain.subList(0, headStart);
     }
 
     public int size() {
-        return this.rankedObjectOrderedChain.size();
+        return this.rankedChain.size();
     }
 
     public IPosition2Rank getPosition2Rank() {
