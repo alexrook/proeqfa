@@ -8,7 +8,7 @@ import java.util.ListIterator;
 /**
  * @author moroz
  */
-public class RankChainFromExpert {
+public class RankChain {
 
     public static enum RankedObjectsLink {
 
@@ -125,10 +125,10 @@ public class RankChainFromExpert {
 
     private IPosition2Rank position2Rank;
 
-    public static RankChainFromExpert fromArray(RankedObject[] rankedObjectOrderedArray,
-                                                IPosition2Rank position2RankImpl) {
+    public static RankChain fromArray(RankedObject[] rankedObjectOrderedArray,
+                                      IPosition2Rank position2RankImpl) {
 
-        RankChainFromExpert ret = new RankChainFromExpert();
+        RankChain ret = new RankChain();
         ret.setPosition2Rank(position2RankImpl);
 
         for (RankedObject ro : rankedObjectOrderedArray) {
