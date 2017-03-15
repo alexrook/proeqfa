@@ -169,6 +169,10 @@ public class RankChain {
 
         double rank = position2Rank.getRankForPosition(rankedChain.size() + 1);
 
+        if (!checkChainAndObj(obj)) {
+            throw new IllegalArgumentException("first object should not have a link");
+        }
+
         switch (obj.relToPreviosObject) {
             case MORE: {
                 obj.setRank(rank);
@@ -190,28 +194,44 @@ public class RankChain {
                     obj.setRank(rank);
                     rankedChain.add(obj);
                 } else {
-                    throw new IllegalArgumentException("non fisrt object must have a link to previos object");
+                    throw new IllegalArgumentException("non first object must have a link to previous object");
                 }
             }
         }
 
     }
 
+    private boolean checkChainAndObj(RankedObject obj) {
+        if (rankedChain.isEmpty()) {
+            return obj.getPreviosObjectRel() == RankedObjectsLink.NIL;
+        } else {
+            return obj.getPreviosObjectRel() != RankedObjectsLink.NIL;
+        }
+    }
+
     private double setRankRecursive(ListIterator<RankedObject> tail, int counter, double rankSum) {
 
-        RankedObject ro = tail.previous();
+        double rank;
 
-        rankSum += ro.getRank();
-        counter++;
+        if (tail.hasPrevious()) {
+            RankedObject ro = tail.previous();
 
-        if (ro.getPreviosObjectRel() == RankedObjectsLink.SAME) {
-            ro.setRank(setRankRecursive(tail, counter, rankSum));
+            rankSum += ro.getRank();
+            counter++;
+
+            if (ro.getPreviosObjectRel() == RankedObjectsLink.SAME) {
+                ro.setRank(setRankRecursive(tail, counter, rankSum));
+                return ro.getRank();
+            }
+
+            rank = rankSum / counter;
+            ro.setRank(rank);
             return ro.getRank();
-        }
 
-        double rank = rankSum / counter;
-        ro.setRank(rank);
-        return ro.getRank();
+        } else {
+            rank = counter > 0 ? rankSum / counter : rankSum;
+            return rank;
+        }
     }
 
     private List<RankedObject> getTailList(int headStart) {

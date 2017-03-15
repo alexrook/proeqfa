@@ -1,6 +1,7 @@
 package proeqfa.math.rank;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -25,6 +26,10 @@ public class RankChainTest {
 
     private List<RankChain.RankedObject[]> docData, docData02;
 
+    /*
+    * test files format:
+    * O<id>(<rank>) <link>O<id>(rank) i.e O1(1) >O2(2.5) ~O3(2.5) ... (with space separator)
+    * */
     public static final Pattern TEST_DATA_PATTERN =
             Pattern.compile("([>~]?)O(\\d+)\\((\\d+.?\\d?)\\)");// i.e O3(1) or >O2(2)
 
@@ -33,7 +38,7 @@ public class RankChainTest {
 
     @Before
     public void setUp() {
-
+        //set rank here for testing purposes
         docData = new ArrayList<>(3);
         //expert A said O1>O3>O2 --> rank=natural order
         RankChain.RankedObject[] expertA = new RankChain.RankedObject[3];
@@ -121,10 +126,12 @@ public class RankChainTest {
 
         for (RankChain.RankedObject[] rankedObjects : docData) {
 
+            double[] expectedVector = getRankVector(rankedObjects);
+
             RankChain instance = RankChain.fromArray(rankedObjects, new NaturalOrderPosition2Rank());
             //  out.println(instance);
             assertEquals(rankedObjects.length, instance.size());
-            double[] expectedVector = getRankVector(rankedObjects);
+
             out.println(Arrays.toString(expectedVector));
             assertArrayEquals(expectedVector, instance.toRankedObjectVector(), 0);
 
@@ -136,10 +143,13 @@ public class RankChainTest {
     public void testFromArray_toRankVector_02() {
         System.out.println("test fromArray02");
         for (RankChain.RankedObject[] rankedObjects : docData02) {
+
+            double[] expectedVector = getRankVector(rankedObjects);
+
             RankChain instance = RankChain.fromArray(rankedObjects, new NaturalOrderPosition2Rank());
             out.println(instance);
             assertEquals(rankedObjects.length, instance.size());
-            double[] expectedVector = getRankVector(rankedObjects);
+
             out.println(Arrays.toString(expectedVector));
             assertArrayEquals(expectedVector, instance.toRankedObjectVector(), 0);
         }
@@ -168,24 +178,22 @@ public class RankChainTest {
                         new FileReader(resDir + "/" + testDataFile)
                 );
 
-                List<RankChain.RankedObject[]> userData = new ArrayList<>(5);
+
                 String testDataLine;
                 while ((testDataLine = reader.readLine()) != null) {
-                    //out.println(testDataLine);
+                    out.println("test-data={ " + testDataLine+" }");
                     RankChain.RankedObject[] rankedObjects = getRankChain(testDataLine);
-                    userData.add(rankedObjects);
-                }
-
-                for (RankChain.RankedObject[] rankedObjects : userData) {
+                    double[] expectedVector = getRankVector(rankedObjects);
 
                     RankChain instance = RankChain.fromArray(rankedObjects, new NaturalOrderPosition2Rank());
                     out.println(instance);
+
                     assertEquals(rankedObjects.length, instance.size());
-                    double[] expectedVector = getRankVector(rankedObjects);
                     //out.println(Arrays.toString(expectedVector));
                     assertArrayEquals(expectedVector, instance.toRankedObjectVector(), 0);
-
                 }
+
+
 
             }
 
