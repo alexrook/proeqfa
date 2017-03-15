@@ -1,7 +1,6 @@
 package proeqfa.math.rank;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -46,11 +45,11 @@ public class RankChainTest {
         expertA[0].setRank(1);
         expertA[1] = new RankChain.RankedObject(3);
         expertA[1].setRank(2);
-        expertA[1].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expertA[1].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
 
         expertA[2] = new RankChain.RankedObject(2);
         expertA[2].setRank(3);
-        expertA[2].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expertA[2].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
 
         docData.add(expertA);
         //expert B said O3>O2>O1 --> rank=natural order
@@ -60,11 +59,11 @@ public class RankChainTest {
 
         expertB[1] = new RankChain.RankedObject(2);//O2
         expertB[1].setRank(2);
-        expertB[1].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expertB[1].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
 
         expertB[2] = new RankChain.RankedObject(1);//O1
         expertB[2].setRank(3);
-        expertB[2].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expertB[2].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
 
         docData.add(expertB);
         //expert C said O1>O2>O3 --> rank=natural order
@@ -73,11 +72,11 @@ public class RankChainTest {
         expertC[0].setRank(1);
         expertC[1] = new RankChain.RankedObject(2);//O2
         expertC[1].setRank(2);
-        expertC[1].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expertC[1].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
 
         expertC[2] = new RankChain.RankedObject(3);//O3
         expertC[2].setRank(3);
-        expertC[2].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expertC[2].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
 
         docData.add(expertC);
 
@@ -89,31 +88,31 @@ public class RankChainTest {
         expA[0] = new RankChain.RankedObject(1);
         expA[0].setRank(1);
         expA[1] = new RankChain.RankedObject(2);
-        expA[1].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expA[1].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
         expA[1].setRank(2);
         expA[2] = new RankChain.RankedObject(3);
-        expA[2].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expA[2].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
         expA[2].setRank(4);
         expA[3] = new RankChain.RankedObject(4);
-        expA[3].setPreviosObjectRel(RankChain.RankedObjectsLink.SAME);
+        expA[3].setPreviousObjectRel(RankChain.RankedObjectsLink.SAME);
         expA[3].setRank(4);
         expA[4] = new RankChain.RankedObject(5);
-        expA[4].setPreviosObjectRel(RankChain.RankedObjectsLink.SAME);
+        expA[4].setPreviousObjectRel(RankChain.RankedObjectsLink.SAME);
         expA[4].setRank(4);
         expA[5] = new RankChain.RankedObject(6);
-        expA[5].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expA[5].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
         expA[5].setRank(6);
         expA[6] = new RankChain.RankedObject(7);
-        expA[6].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expA[6].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
         expA[6].setRank(7);
         expA[7] = new RankChain.RankedObject(8);
-        expA[7].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expA[7].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
         expA[7].setRank(8);
         expA[8] = new RankChain.RankedObject(9);
-        expA[8].setPreviosObjectRel(RankChain.RankedObjectsLink.MORE);
+        expA[8].setPreviousObjectRel(RankChain.RankedObjectsLink.MORE);
         expA[8].setRank(9.5);
         expA[9] = new RankChain.RankedObject(10);
-        expA[9].setPreviosObjectRel(RankChain.RankedObjectsLink.SAME);
+        expA[9].setPreviousObjectRel(RankChain.RankedObjectsLink.SAME);
         expA[9].setRank(9.5);
         docData02.add(expA);
 
@@ -218,7 +217,7 @@ public class RankChainTest {
                 ro.setRank(Double.valueOf(m.group(3)));
                 String link = m.group(1);
                 if ((link != null) && (!link.isEmpty())) {
-                    ro.setPreviosObjectRel(RankChain.RankedObjectsLink.fromString(link));
+                    ro.setPreviousObjectRel(RankChain.RankedObjectsLink.fromString(link));
                 }
                 ret[i] = ro;
             } else {

@@ -83,18 +83,18 @@ public class RankChain {
 
         private final int id;
         private double rank;
-        private RankedObjectsLink relToPreviosObject = RankedObjectsLink.NIL;
+        private RankedObjectsLink relToPreviousObject = RankedObjectsLink.NIL;
 
         public RankedObject(int id) {
             this.id = id;
         }
 
-        public RankedObjectsLink getPreviosObjectRel() {
-            return relToPreviosObject;
+        public RankedObjectsLink getPreviousObjectRel() {
+            return relToPreviousObject;
         }
 
-        public void setPreviosObjectRel(RankedObjectsLink link) {
-            this.relToPreviosObject = link;
+        public void setPreviousObjectRel(RankedObjectsLink link) {
+            this.relToPreviousObject = link;
         }
 
         public int getRankedObjectId() {
@@ -111,7 +111,7 @@ public class RankChain {
 
         @Override
         public String toString() {
-            return relToPreviosObject + " O" + id + "(" + rank + ")";
+            return relToPreviousObject + " O" + id + "(" + rank + ")";
         }
 
     }
@@ -173,7 +173,7 @@ public class RankChain {
             throw new IllegalArgumentException("first object should not have a link");
         }
 
-        switch (obj.relToPreviosObject) {
+        switch (obj.relToPreviousObject) {
             case MORE: {
                 obj.setRank(rank);
                 rankedChain.add(obj);
@@ -203,9 +203,9 @@ public class RankChain {
 
     private boolean checkChainAndObj(RankedObject obj) {
         if (rankedChain.isEmpty()) {
-            return obj.getPreviosObjectRel() == RankedObjectsLink.NIL;
+            return obj.getPreviousObjectRel() == RankedObjectsLink.NIL;
         } else {
-            return obj.getPreviosObjectRel() != RankedObjectsLink.NIL;
+            return obj.getPreviousObjectRel() != RankedObjectsLink.NIL;
         }
     }
 
@@ -219,7 +219,7 @@ public class RankChain {
             rankSum += ro.getRank();
             counter++;
 
-            if (ro.getPreviosObjectRel() == RankedObjectsLink.SAME) {
+            if (ro.getPreviousObjectRel() == RankedObjectsLink.SAME) {
                 ro.setRank(setRankRecursive(tail, counter, rankSum));
                 return ro.getRank();
             }
