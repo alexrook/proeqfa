@@ -149,12 +149,12 @@ public class RankChain {
 
     @Override
     public String toString() {
-        StringBuilder buf = new StringBuilder("RankChain{ ");
+        StringBuilder buf = new StringBuilder("RankChain{{ ");
         for (RankedObject o : rankedChain) {
             buf.append(o);
             buf.append(" ");
         }
-        return buf.append("}").toString();
+        return buf.append("}, k=").append(expertCompetenceFactor).append("}").toString();
     }
 
     public double getExpertCompetenceFactor() {
