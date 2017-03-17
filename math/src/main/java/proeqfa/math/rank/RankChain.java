@@ -1,14 +1,16 @@
 package proeqfa.math.rank;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * @author moroz
  */
-public class RankChain {
+public class RankChain  implements Iterable<RankChain.RankedObject>{
+
+    @Override
+    public Iterator<RankedObject> iterator() {
+        return this.rankedChain.iterator();
+    }
 
     public enum RankedObjectsLink {
 
@@ -66,19 +68,6 @@ public class RankChain {
 
     }
 
-    public static void main(String[] args) {
-
-        List<String> aaa = new LinkedList<>();
-
-        aaa.addAll(Arrays.asList(new String[]{"aaa", "bbb", "ccc"}));
-
-        ListIterator<String> li = aaa.listIterator(aaa.size() - 1);
-        while (li.hasPrevious()) {
-            System.out.println(li.previous());
-        }
-
-    }
-
     public static class RankedObject {
 
         private final int id;
@@ -97,7 +86,7 @@ public class RankChain {
             this.relToPreviousObject = link;
         }
 
-        public int getRankedObjectId() {
+        public int getId() {
             return this.id;
         }
 
@@ -242,7 +231,7 @@ public class RankChain {
         return this.rankedChain.size();
     }
 
-    public IPosition2Rank getPosition2Rank() {
+     public IPosition2Rank getPosition2Rank() {
         return position2Rank;
     }
 

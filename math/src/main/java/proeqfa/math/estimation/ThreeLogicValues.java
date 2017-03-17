@@ -66,4 +66,8 @@ public class ThreeLogicValues extends TreeSet<Double> {
         return lower(getMore());
     }
 
+    @Override
+    public String toString() {
+        return String.format("ThreeLogicValues{more=%s, less=%s, same=%s}", getMore(), getLess(), getSame());
+    }
 }

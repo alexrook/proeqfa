@@ -203,7 +203,7 @@ public class RankChainTest {
 
     }
 
-    private static RankChain.RankedObject[] getRankChain(String testDataLine /* ie O1(1) >O2(2.5) ~O3(2.5)*/) {
+    public static RankChain.RankedObject[] getRankChain(String testDataLine /* ie O1(1) >O2(2.5) ~O3(2.5)*/) {
 
         final String[] objects = testDataLine.split("\\s");
         final RankChain.RankedObject[] ret = new RankChain.RankedObject[objects.length];
@@ -230,7 +230,7 @@ public class RankChainTest {
     public static double[] getRankVector(RankChain.RankedObject[] rankedObjects) {
         double[] ret = new double[rankedObjects.length];
         for (RankChain.RankedObject rankedObject : rankedObjects) {
-            ret[rankedObject.getRankedObjectId() - 1] = rankedObject.getRank();
+            ret[rankedObject.getId() - 1] = rankedObject.getRank();
         }
         return ret;
     }

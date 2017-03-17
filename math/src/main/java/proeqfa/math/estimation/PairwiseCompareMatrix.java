@@ -5,7 +5,7 @@ package proeqfa.math.estimation;
  */
 public class PairwiseCompareMatrix {
 
-    private final Double[][] data; //see dummy test
+    private final Double[][] data; //TODO change to double[][]
     private final ThreeLogicValues logicValues;
     private int notInitPairCount, objCount;
 

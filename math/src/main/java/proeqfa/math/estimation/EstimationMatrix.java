@@ -51,10 +51,10 @@ public class EstimationMatrix {
         for (int i = 0; i < objCount; i++) {
             for (int j = 0; j < objCount; j++) {
 
-               // https://mathbits.com/MathBits/Java/DataBasics/Mathoperators.htm
-               //Be careful when performing integer division.  
-               //When dividing an integer by an integer, 
-               //the answer will be an integer (not rounded)
+                // https://mathbits.com/MathBits/Java/DataBasics/Mathoperators.htm
+                //Be careful when performing integer division.
+                //When dividing an integer by an integer,
+                //the answer will be an integer (not rounded)
                 double moreDecision = moreDecisionMarix[i][j];
                 double lessDecision = moreDecisionMarix[j][i];
                 double sameDecision = totalExperts - (moreDecision + lessDecision);
@@ -71,7 +71,6 @@ public class EstimationMatrix {
     }
 
     /**
-     *
      * @return result matrix
      */
     public double[][] getResultMatrix() {
@@ -80,6 +79,14 @@ public class EstimationMatrix {
         } else {
             throw new IllegalStateException("matrix is not calculated, use calculate() first");
         }
+    }
+
+    public int getObjectsCount() {
+        return objCount;
+    }
+
+    public ThreeLogicValues getLogicValues() {
+        return logicValues;
     }
 
 }

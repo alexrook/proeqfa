@@ -85,11 +85,11 @@ public class RankMatrixTest {
         out.println("actual ranks: "+Arrays.toString(actualRanks));
         assertArrayEquals(expectedRanks, actualRanks, 0);
         double expMaxRank=expectedRanks[1];
-        assertEquals(2,instance.getMaxRankObject().getRankedObjectId());
+        assertEquals(2,instance.getMaxRankObject().getId());
         assertEquals(expMaxRank,instance.getMaxRankObject().getRank(),0);
 
         double expMinRank=expectedRanks[0];
-        assertEquals(1,instance.getMinRankObject().getRankedObjectId());
+        assertEquals(1,instance.getMinRankObject().getId());
         assertEquals(expMinRank,instance.getMinRankObject().getRank(),0);
 
     }
