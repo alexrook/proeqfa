@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * @author moroz
  */
-public class RankChain  implements Iterable<RankChain.RankedObject>{
+public class RankChain implements Iterable<RankChain.RankedObject> {
 
     @Override
     public Iterator<RankedObject> iterator() {
@@ -171,9 +171,9 @@ public class RankChain  implements Iterable<RankChain.RankedObject>{
             case SAME: {
                 obj.setRank(rank);//fake rank for start calc
                 rankedChain.add(obj);
-                List<RankedObject> tailList = getTailList(rankedChain.size());
-                if (tailList != null) {
-                    ListIterator<RankedObject> tailIterator = tailList.listIterator(tailList.size());
+                List<RankedObject> tail = getTail(rankedChain.size());
+                if (tail != null) {
+                    ListIterator<RankedObject> tailIterator = tail.listIterator(tail.size());
                     setRankRecursive(tailIterator, 0, 0);
                 }
                 break;
@@ -223,15 +223,19 @@ public class RankChain  implements Iterable<RankChain.RankedObject>{
         }
     }
 
-    private List<RankedObject> getTailList(int headStart) {
+    public List<RankedObject> getTail(int headStart) {
         return rankedChain.subList(0, headStart);
+    }
+
+    public List<RankedObject> getHead(int tailEnd) {
+        return rankedChain.subList(tailEnd, rankedChain.size());
     }
 
     public int size() {
         return this.rankedChain.size();
     }
 
-     public IPosition2Rank getPosition2Rank() {
+    public IPosition2Rank getPosition2Rank() {
         return position2Rank;
     }
 
