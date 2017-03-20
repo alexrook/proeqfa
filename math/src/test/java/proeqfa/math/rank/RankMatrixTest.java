@@ -1,23 +1,28 @@
 package proeqfa.math.rank;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import proeqfa.math.TestBase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static java.lang.System.out;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by moroz on 16.03.17.
  */
-public class RankMatrixTest {
+public class RankMatrixTest extends TestBase {
 
     private List<RankChain> docData;
 
     @Before
+    @Override
     public void setUp() {
+        super.setUp();
         //set rank here for testing purposes
         docData = new ArrayList<>(3);
         //expert A said O1>O3>O2 --> rank=natural order
@@ -71,6 +76,12 @@ public class RankMatrixTest {
 
     }
 
+    @After
+    @Override
+    public void tearDown() {
+        super.tearDown();
+    }
+
     @Test
     public void testGetRankedObjectsSums01() {
         out.println("testGetRankedObjectsSums");
@@ -82,15 +93,15 @@ public class RankMatrixTest {
 
         double[] expectedRanks = new double[]{1.02, 2.5, 2.48};//see project docs
         double[] actualRanks = instance.getRankedObjectsSums();
-        out.println("actual ranks: "+Arrays.toString(actualRanks));
+        out.println("actual ranks: " + Arrays.toString(actualRanks));
         assertArrayEquals(expectedRanks, actualRanks, 0);
-        double expMaxRank=expectedRanks[1];
-        assertEquals(2,instance.getMaxRankObject().getId());
-        assertEquals(expMaxRank,instance.getMaxRankObject().getRank(),0);
+        double expMaxRank = expectedRanks[1];
+        assertEquals(2, instance.getMaxRankObject().getId());
+        assertEquals(expMaxRank, instance.getMaxRankObject().getRank(), 0);
 
-        double expMinRank=expectedRanks[0];
-        assertEquals(1,instance.getMinRankObject().getId());
-        assertEquals(expMinRank,instance.getMinRankObject().getRank(),0);
+        double expMinRank = expectedRanks[0];
+        assertEquals(1, instance.getMinRankObject().getId());
+        assertEquals(expMinRank, instance.getMinRankObject().getRank(), 0);
 
     }
 }

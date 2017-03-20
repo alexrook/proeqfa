@@ -1,13 +1,15 @@
 package proeqfa.math.estimation;
 
 import org.junit.*;
+import proeqfa.math.TestBase;
+
 import static org.junit.Assert.*;
 
 /**
  *
  * @author moroz
  */
-public class ThreeLogicValuesTest {
+public class ThreeLogicValuesTest extends TestBase{
 
     /*warn! order is important*/
     double[] VIEW1 = {2d, 1d, 0d},
@@ -17,12 +19,23 @@ public class ThreeLogicValuesTest {
     public ThreeLogicValuesTest() {
     }
 
+    @Before
+    @Override
+    public void setUp(){
+        super.setUp();
+    }
+
+    @After
+    @Override
+    public void tearDown(){
+        super.tearDown();
+    }
     /**
      * Test of getView1 method, of class ThreeLogicValues.
      */
     @Test
     public void testGetView1() {
-        System.out.println("getView1");
+        out.println("getView1");
         ThreeLogicValues result = ThreeLogicValues.getView1();
         assertNotNull(result);
         assertArrayEquals(new double[]{result.getMore(), result.getSame(), result.getLess()},
@@ -38,7 +51,7 @@ public class ThreeLogicValuesTest {
      */
     @Test
     public void testGetView2() {
-        System.out.println("getView2");
+        out.println("getView2");
         ThreeLogicValues result = ThreeLogicValues.getView2();
         assertNotNull(result);
         assertArrayEquals(new double[]{result.getMore(), result.getSame(), result.getLess()},
@@ -53,7 +66,7 @@ public class ThreeLogicValuesTest {
      */
     @Test
     public void testGetView3() {
-        System.out.println("getView3");
+        out.println("getView3");
         ThreeLogicValues result = ThreeLogicValues.getView3();
         assertNotNull(result);
         double[] resultValues = {result.getMore(), result.getSame(), result.getLess()};
@@ -68,7 +81,7 @@ public class ThreeLogicValuesTest {
      */
     @Test
     public void testGetMore() {
-        System.out.println("getMore");
+        out.println("getMore");
         double expResult = 5.0d;
         ThreeLogicValues instance = new ThreeLogicValues(expResult, 2, 1);
         double result = instance.getMore();
@@ -81,7 +94,7 @@ public class ThreeLogicValuesTest {
      */
     @Test
     public void testGetLess() {
-        System.out.println("getLess");
+        out.println("getLess");
         double expResult = 1.0d;
         ThreeLogicValues instance = new ThreeLogicValues(3, 2, expResult);
         double result = instance.getLess();
@@ -93,7 +106,7 @@ public class ThreeLogicValuesTest {
      */
     @Test
     public void testGetSame() {
-        System.out.println("getSame");
+        out.println("getSame");
         double expResult = 2.0d;
         ThreeLogicValues instance = new ThreeLogicValues(3, expResult, 1);
         double result = instance.getSame();

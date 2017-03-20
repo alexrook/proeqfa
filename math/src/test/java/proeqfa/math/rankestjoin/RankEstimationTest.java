@@ -5,6 +5,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.*;
+import proeqfa.math.TestBase;
 import proeqfa.math.commons.Array2DUtils;
 import proeqfa.math.estimation.*;
 import proeqfa.math.rank.NaturalOrderPosition2Rank;
@@ -19,12 +20,7 @@ import java.io.PrintStream;
 /**
  * Created by moroz on 17.03.17.
  */
-public class RankEstimationTest {
-
-    private static final Logger log= LogManager.getLogger(RankEstimationTest.class);
-
-    private ByteArrayOutputStream baos;
-    private PrintStream out;
+public class RankEstimationTest extends TestBase {
 
     //-- doc рис. А.6
     final int DD_OBJ_COUNT = 3; //dd -> doc data
@@ -53,9 +49,9 @@ public class RankEstimationTest {
     //---
 
     @Before
+    @Override
     public void setUp() {
-        baos = new ByteArrayOutputStream();
-        out= new PrintStream(baos);
+        super.setUp();
         //doc рис. А.6
         dd_expert1 = RankChain.fromArray(
                 RankChainTest.getRankChain("O1(1) >O2(2) >O3(3)")
@@ -71,6 +67,11 @@ public class RankEstimationTest {
 
     }
 
+    @After
+    @Override
+    public void tearDown() {
+        super.tearDown();
+    }
 
     @Test
     public void test_dd_to_RelativeImportanceVector01() throws Exception {
@@ -101,7 +102,6 @@ public class RankEstimationTest {
         TestUtils.printMatrix(actualVector.getData(), out, 3, 3);
         TestUtils.assert2DArrayEquals(dd_ri_vector.getData(),
                 actualVector.getData(), DD_EVALUATION_RATE);
-        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
     }
 
     @Test
@@ -131,8 +131,6 @@ public class RankEstimationTest {
         TestUtils.assert2DArrayEquals(
                 dd_pw_expected3,
                 Array2DUtils.toPrimitive(actPaMatrix3.getMatrix()), 0d);
-
-        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
     }
 
 }

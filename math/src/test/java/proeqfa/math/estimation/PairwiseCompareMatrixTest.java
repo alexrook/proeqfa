@@ -3,6 +3,7 @@ package proeqfa.math.estimation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.*;
+import proeqfa.math.TestBase;
 
 
 import java.io.ByteArrayOutputStream;
@@ -14,21 +15,20 @@ import static org.junit.Assert.*;
 /**
  * @author moroz
  */
-public class PairwiseCompareMatrixTest {
-    private static final Logger log =
-            LogManager.getLogger(PairwiseCompareMatrixTest.class);
-
-    private ByteArrayOutputStream baos;
-    private PrintStream out;
+public class PairwiseCompareMatrixTest extends TestBase {
 
     public PairwiseCompareMatrixTest() {
     }
 
     @Before
+    @Override
     public void setUp() {
+        super.setUp();
+    }
 
-        baos = new ByteArrayOutputStream();
-        out = new PrintStream(baos);
+    @After
+    @Override
+    public void tearDown(){
 
     }
 
@@ -81,9 +81,6 @@ public class PairwiseCompareMatrixTest {
         assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(i, j), 0);
         assertEquals(threeLogic.getLess(), instance.getPairwiseCompare(j, i), 0);
         TestUtils.printPairwiseMatrix(instance, out);
-
-        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
-
     }
 
     /**
@@ -107,7 +104,6 @@ public class PairwiseCompareMatrixTest {
         assertEquals(threeLogic.getLess(), instance.getPairwiseCompare(i, j), 0);
         assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(j, i), 0);
         TestUtils.printPairwiseMatrix(instance, out);
-        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -116,7 +112,7 @@ public class PairwiseCompareMatrixTest {
         ThreeLogicValues threeLogic = ThreeLogicValues.getView3();
         int i = 1, j = 1;
         PairwiseCompareMatrix instance = new PairwiseCompareMatrix(3, threeLogic);
-        /* for view3 expexted result
+        /* for view3 expected result
         ╔═════╦═════╦═════╗
         ║ 0.5 ║  n  ║  n  ║
         ║  n  ║ 0.5 ║  n  ║
@@ -125,7 +121,6 @@ public class PairwiseCompareMatrixTest {
          */
         TestUtils.printPairwiseMatrix(instance, out);
         instance.setLess(i, j);
-        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
     }
 
     @Test
@@ -143,8 +138,6 @@ public class PairwiseCompareMatrixTest {
         int exp_s3 = 6; //3+2+1 (step 1)
         int s3 = PairwiseCompareMatrix.getRevertProgressionSum(3, 1, 1);
         assertEquals(exp_s3, s3);
-
-        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
 
     }
 
@@ -187,7 +180,6 @@ public class PairwiseCompareMatrixTest {
          */
         int c3 = PairwiseCompareMatrix.getHighEchelonSquareMatrixEntryCount(5);
         assertEquals(exp_c3, c3);
-        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
     }
 
 }

@@ -2,28 +2,21 @@ package proeqfa.math.estimation;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import proeqfa.math.TestBase;
+import proeqfa.math.estimation.u.LavRelativeImportanceVectorTestData03;
 
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static proeqfa.math.estimation.TestUtils.*;
-
-import proeqfa.math.estimation.u.*;
-import proeqfa.math.rankestjoin.RankEstimationTest;
+import static proeqfa.math.estimation.TestUtils.assert2DArrayEquals;
 
 /**
  * @author moroz
  */
-public class EstimationMatrixTest {
-
-    private static final Logger log = LogManager.getLogger(EstimationMatrixTest.class);
-
-    private ByteArrayOutputStream baos;
-    private PrintStream out;
+public class EstimationMatrixTest extends TestBase {
 
     List<IEstimationTestData> testDataList;
 
@@ -31,10 +24,10 @@ public class EstimationMatrixTest {
     }
 
     @Before
+    @Override
     public void setUp() {
 
-        baos = new ByteArrayOutputStream();
-        out = new PrintStream(baos);
+        super.setUp();
 
         testDataList = new ArrayList<>();
 
@@ -136,6 +129,12 @@ public class EstimationMatrixTest {
 
     }
 
+    @After
+    @Override
+    public void tearDown() {
+        super.tearDown();
+    }
+
     @Test
     public void printTestData() {
 
@@ -146,7 +145,7 @@ public class EstimationMatrixTest {
                 TestUtils.printPairwiseMatrix(m, out);
             }
         }
-        log.debug(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8));
+
     }
 
     @Test
@@ -165,7 +164,7 @@ public class EstimationMatrixTest {
             assert2DArrayEquals(testData.getExpectedEstimationMatrix(), actual, 0.0000000001);
 
         }
-        log.debug(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8));
+
     }
 
     /**
@@ -222,7 +221,6 @@ public class EstimationMatrixTest {
         out.println("---estimation matrix--");
         TestUtils.printMatrix(ret, out);
 
-        log.debug(new String(baos.toByteArray(), java.nio.charset.StandardCharsets.UTF_8));
 
     }
 

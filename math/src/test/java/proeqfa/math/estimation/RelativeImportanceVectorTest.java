@@ -1,20 +1,23 @@
 package proeqfa.math.estimation;
 
 import org.apache.commons.math3.linear.RealMatrix;
-import org.junit.*;
-import static org.junit.Assert.*;
-import static java.lang.System.out;
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import proeqfa.math.TestBase;
 import proeqfa.math.commons.Array2DUtils;
-import static proeqfa.math.estimation.TestUtils.assert2DArrayEquals;
 import proeqfa.math.estimation.u.LavRelativeImportanceVectorTestData03;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertArrayEquals;
+import static proeqfa.math.estimation.TestUtils.assert2DArrayEquals;
+
 /**
- *
  * @author moroz
  */
-public class RelativeImportanceVectorTest {
+public class RelativeImportanceVectorTest extends TestBase {
 
     List<IRelativeImportanceVectorTestData> testDataList;
 
@@ -22,7 +25,9 @@ public class RelativeImportanceVectorTest {
     }
 
     @Before
-    public void setUP() {
+    @Override
+    public void setUp() {
+        super.setUp();
 
         testDataList = new ArrayList<>();
 
@@ -30,22 +35,28 @@ public class RelativeImportanceVectorTest {
 
     }
 
+    @After
+    @Override
+    public void tearDown() {
+        super.tearDown();
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testLambda01() {
 
         List<Double[][]> pairM = new ArrayList<>();
         pairM.add(new Double[][]{
-            {0d, 1d},
-            {1d}
+                {0d, 1d},
+                {1d}
         });
         pairM.add(new Double[][]{
-            {0d, 1d},
-            {1d}
+                {0d, 1d},
+                {1d}
         });
 
         pairM.add(new Double[][]{
-            {-1d, 1d},
-            {1d}
+                {-1d, 1d},
+                {1d}
         });
 
         EstimationMatrix eM = new EstimationMatrix(3, ThreeLogicValues.getView2());
@@ -73,18 +84,18 @@ public class RelativeImportanceVectorTest {
 
         List<Double[][]> pairM = new ArrayList<>();
         pairM.add(new Double[][]{
-            {0.5d, 1d},
-            {1d}
+                {0.5d, 1d},
+                {1d}
         });
 
         pairM.add(new Double[][]{
-            {0.5d, 1d},
-            {1d}
+                {0.5d, 1d},
+                {1d}
         });
 
         pairM.add(new Double[][]{
-            {0d, 1d},
-            {1d}
+                {0d, 1d},
+                {1d}
         });
 
         EstimationMatrix eM = new EstimationMatrix(3, ThreeLogicValues.getView3());
@@ -111,18 +122,18 @@ public class RelativeImportanceVectorTest {
 
         List<Double[][]> pairM = new ArrayList<>();
         pairM.add(new Double[][]{
-            {1d, 2d},
-            {2d}
+                {1d, 2d},
+                {2d}
         });
 
         pairM.add(new Double[][]{
-            {1d, 2d},
-            {2d}
+                {1d, 2d},
+                {2d}
         });
 
         pairM.add(new Double[][]{
-            {0d, 2d},
-            {2d}
+                {0d, 2d},
+                {2d}
         });
 
         EstimationMatrix eM = new EstimationMatrix(3, ThreeLogicValues.getView1());
@@ -186,14 +197,14 @@ public class RelativeImportanceVectorTest {
                 PairwiseCompareMatrix n = TestUtils.toOtherLogicValues(m, newValues);
                 eM.addPairwiseCompare(n);
             }
-            
+
             eM.calculate();
             double[][] actual = eM.getResultMatrix();
-          //  TestUtils.printMatrix(actual, out);
-            
+            //  TestUtils.printMatrix(actual, out);
+
             RelativeImportanceVector instance
                     = new RelativeImportanceVector(testData.getObjCount(), testData.getEvaluationRate());
-           
+
             instance.calculate(actual);
             TestUtils.printMatrix(instance.getRelativeImportanceVector().getData(), out);
             assert2DArrayEquals(testData.getExpectedRelativeImportanceVector().getData(),
@@ -208,7 +219,7 @@ public class RelativeImportanceVectorTest {
      */
     @Test
     public void testGetEarray() {
-        System.out.println("getEarray");
+        out.println("getEarray");
         double[] expResult = {1, 1, 1};
         double[] result = RelativeImportanceVector.getEarray(3);
         assertArrayEquals(expResult, result, 0);
@@ -219,13 +230,13 @@ public class RelativeImportanceVectorTest {
      */
     @Test
     public void testCalculate() {
-        System.out.println("calculate");
+        out.println("calculate");
         final int objCount = 3;
 
         Double[][] estimationMatrix = {
-            {(3 / 6d), (5 / 6d), (4 / 6d)},
-            {(1 / 6d), (3 / 6d), (1 / 6d)},
-            {(2 / 6d), (5 / 6d), (3 / 6d)}
+                {(3 / 6d), (5 / 6d), (4 / 6d)},
+                {(1 / 6d), (3 / 6d), (1 / 6d)},
+                {(2 / 6d), (5 / 6d), (3 / 6d)}
         };
 
         TestUtils.printMatrix(estimationMatrix, out);
