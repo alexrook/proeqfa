@@ -1,15 +1,18 @@
 package proeqfa.math.estimation;
 
 import org.junit.*;
+
 import static org.junit.Assert.*;
 import static java.lang.System.out;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static proeqfa.math.estimation.TestUtils.*;
+
 import proeqfa.math.estimation.u.*;
 
 /**
- *
  * @author moroz
  */
 public class EstimationMatrixTest {
@@ -24,7 +27,7 @@ public class EstimationMatrixTest {
 
         testDataList = new ArrayList<>();
 
-        IEstimationTestData docData = new IEstimationTestData() {
+        IEstimationTestData docData01 = new IEstimationTestData() {
             @Override
             public ThreeLogicValues getLogicValues() {
                 return ThreeLogicValues.getView3();//more=1, less=0, same=0.5d
@@ -34,16 +37,16 @@ public class EstimationMatrixTest {
             public List<Double[][]> getPairwiseCompareHighEchelonArrays() {
                 List<Double[][]> ret = new ArrayList<>();
                 ret.add(new Double[][]{
-                    {1d, 1d},
-                    {0d}
+                        {1d, 1d},
+                        {0d}
                 });
                 ret.add(new Double[][]{
-                    {0.5d, 0.5d},
-                    {0.5d}
+                        {0.5d, 0.5d},
+                        {0.5d}
                 });
                 ret.add(new Double[][]{
-                    {1d, 0.5d},
-                    {0d}
+                        {1d, 0.5d},
+                        {0d}
                 });
                 return ret;
             }
@@ -51,9 +54,9 @@ public class EstimationMatrixTest {
             @Override
             public double[][] getExpectedEstimationMatrix() {
                 return new double[][]{
-                    {(3 / 6d), (5 / 6d), (4 / 6d)},
-                    {(1 / 6d), (3 / 6d), (1 / 6d)},
-                    {(2 / 6d), (5 / 6d), (3 / 6d)}
+                        {(3 / 6d), (5 / 6d), (4 / 6d)},
+                        {(1 / 6d), (3 / 6d), (1 / 6d)},
+                        {(2 / 6d), (5 / 6d), (3 / 6d)}
                 };
 
             }
@@ -69,7 +72,54 @@ public class EstimationMatrixTest {
             }
         };
 
-        testDataList.add(docData);
+        IEstimationTestData docData02 = new IEstimationTestData() {// A.1.3
+            @Override
+            public ThreeLogicValues getLogicValues() {
+                return ThreeLogicValues.getView3();//more=1, less=0, same=0.5d
+            }
+
+            @Override
+            public List<Double[][]> getPairwiseCompareHighEchelonArrays() {
+                List<Double[][]> ret = new ArrayList<>();
+                ret.add(new Double[][]{
+                        {1d, 1d},
+                        {1d}
+                });
+                ret.add(new Double[][]{
+                        {1d, 1d},
+                        {0d}
+                });
+                ret.add(new Double[][]{
+                        {0d, 1d},
+                        {1d}
+                });
+                return ret;
+            }
+
+            @Override
+            public double[][] getExpectedEstimationMatrix() {
+                return new double[][]{
+                        {(1 / 2d), (2 / 3d), (1d)},
+                        {(1 / 3d), (1 / 2d), (2 / 3d)},
+                        {(0d), (1 / 3d), (1 / 2d)}
+                };
+
+            }
+
+            @Override
+            public String getDesc() {
+                return "test data from Приложение А.1.3";
+            }
+
+            @Override
+            public int getObjCount() {
+                return 3;
+            }
+        };
+
+
+        testDataList.add(docData01);
+        testDataList.add(docData02);
         //   testDataList.add(new LavRelativeImportanceVectorTestData01());
         testDataList.add(new LavRelativeImportanceVectorTestData03());
 
@@ -151,9 +201,9 @@ public class EstimationMatrixTest {
         double[][] ret = estimationMatrix.getResultMatrix();
 
         double[][] expectedEstimationMatrix = {
-            {(3 / 6d), (5 / 6d), (4 / 6d)},
-            {(1 / 6d), (3 / 6d), (1 / 6d)},
-            {(2 / 6d), (5 / 6d), (3 / 6d)}
+                {(3 / 6d), (5 / 6d), (4 / 6d)},
+                {(1 / 6d), (3 / 6d), (1 / 6d)},
+                {(2 / 6d), (5 / 6d), (3 / 6d)}
         };
 
         assert2DArrayEquals(expectedEstimationMatrix, ret, 0.0000000001);
