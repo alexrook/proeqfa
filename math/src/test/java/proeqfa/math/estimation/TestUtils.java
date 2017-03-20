@@ -3,7 +3,9 @@ package proeqfa.math.estimation;
 import java.io.PrintStream;
 import java.text.NumberFormat;
 import java.util.Locale;
+
 import static org.junit.Assert.*;
+
 import proeqfa.math.commons.Array2DUtils;
 
 /**
@@ -11,7 +13,8 @@ import proeqfa.math.commons.Array2DUtils;
  */
 public class TestUtils {
 
-    private static final NumberFormat N_FORMATER = NumberFormat.getInstance(Locale.US);
+    private static final NumberFormat N_FORMATER = NumberFormat.getInstance(Locale.US),
+            C_FORMATER = NumberFormat.getInstance(Locale.US);
 
     static {
         N_FORMATER.setMaximumFractionDigits(3);
@@ -56,11 +59,18 @@ public class TestUtils {
         }
     }
 
-    public static void printMatrix(double[][] array, PrintStream out) {
+
+    public static void printMatrix(double[][] array, PrintStream out, int maxFractDigits, int minFractDigits) {
+        C_FORMATER.setMaximumFractionDigits(maxFractDigits);
+        C_FORMATER.setMinimumFractionDigits(minFractDigits);
+        printMatrix(array, out, C_FORMATER);
+    }
+
+    public static void printMatrix(double[][] array, PrintStream out, NumberFormat formater) {
 
         for (double[] row : array) {
             for (double val : row) {
-                String v = N_FORMATER.format(val);
+                String v = formater.format(val);
                 out.append(" ")
                         .append(v)
                         .append("  ")
@@ -71,6 +81,12 @@ public class TestUtils {
                     .append("\n");
         }
     }
+
+    public static void printMatrix(double[][] array, PrintStream out) {
+        printMatrix(array, out, N_FORMATER);
+
+    }
+
 
     public static void printMatrix(int[][] array, PrintStream out) {
 
@@ -98,7 +114,9 @@ public class TestUtils {
         printMatrix(array, out);
     }
 
-    public static void printPairwiseMatrixHumanFriendly(PairwiseCompareMatrix matrix, ThreeLogicValues logicValues, PrintStream out) {
+    public static void printPairwiseMatrixHumanFriendly(PairwiseCompareMatrix matrix,
+                                                        ThreeLogicValues logicValues,
+                                                        PrintStream out) {
         Double[][] m = matrix.getMatrix();
         for (Double[] row : m) {
             for (Double val : row) {
