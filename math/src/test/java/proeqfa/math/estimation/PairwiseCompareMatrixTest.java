@@ -1,16 +1,35 @@
 package proeqfa.math.estimation;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.*;
 
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import static org.junit.Assert.*;
-import static java.lang.System.*;
+
 
 /**
  * @author moroz
  */
 public class PairwiseCompareMatrixTest {
+    private static final Logger log =
+            LogManager.getLogger(PairwiseCompareMatrixTest.class);
+
+    private ByteArrayOutputStream baos;
+    private PrintStream out;
 
     public PairwiseCompareMatrixTest() {
+    }
+
+    @Before
+    public void setUp() {
+
+        baos = new ByteArrayOutputStream();
+        out = new PrintStream(baos);
+
     }
 
     @Test
@@ -46,7 +65,7 @@ public class PairwiseCompareMatrixTest {
      */
     @Test
     public void testSetMore() {
-        System.out.println("setMore");
+        out.println("setMore");
         ThreeLogicValues threeLogic = ThreeLogicValues.getView1();
         int i = 1, j = 0;
 
@@ -61,7 +80,10 @@ public class PairwiseCompareMatrixTest {
          */
         assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(i, j), 0);
         assertEquals(threeLogic.getLess(), instance.getPairwiseCompare(j, i), 0);
-        TestUtils.printPairwiseMatrix(instance,out);
+        TestUtils.printPairwiseMatrix(instance, out);
+
+        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
+
     }
 
     /**
@@ -69,7 +91,7 @@ public class PairwiseCompareMatrixTest {
      */
     @Test
     public void testSetLess() {
-        System.out.println("setLess");
+        out.println("setLess");
         ThreeLogicValues threeLogic = ThreeLogicValues.getView2();
         int i = 2, j = 1;
 
@@ -84,13 +106,13 @@ public class PairwiseCompareMatrixTest {
          */
         assertEquals(threeLogic.getLess(), instance.getPairwiseCompare(i, j), 0);
         assertEquals(threeLogic.getMore(), instance.getPairwiseCompare(j, i), 0);
-        TestUtils.printPairwiseMatrix(instance,out);
-
+        TestUtils.printPairwiseMatrix(instance, out);
+        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testSetMoreWithBadVal() {
-        System.out.println("setLess - expected exception");
+        out.println("setLess - expected exception");
         ThreeLogicValues threeLogic = ThreeLogicValues.getView3();
         int i = 1, j = 1;
         PairwiseCompareMatrix instance = new PairwiseCompareMatrix(3, threeLogic);
@@ -101,13 +123,14 @@ public class PairwiseCompareMatrixTest {
         ║  n  ║  n  ║ 0.5 ║
         ╚═════╩═════╩═════╝
          */
-        TestUtils.printPairwiseMatrix(instance,out);
+        TestUtils.printPairwiseMatrix(instance, out);
         instance.setLess(i, j);
+        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
     }
 
     @Test
     public void testGetRevertProgressionSum() {
-        System.out.println("getRevertProgressionSum");
+        out.println("getRevertProgressionSum");
 
         int exp_s1 = 9; //4+3+2 (step 1)
         int s1 = PairwiseCompareMatrix.getRevertProgressionSum(4, 2, 1);
@@ -120,11 +143,14 @@ public class PairwiseCompareMatrixTest {
         int exp_s3 = 6; //3+2+1 (step 1)
         int s3 = PairwiseCompareMatrix.getRevertProgressionSum(3, 1, 1);
         assertEquals(exp_s3, s3);
+
+        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
+
     }
 
     @Test
     public void testGetHighEchelonSquareMatrixEntryCount() {
-        System.out.println("getHighEchelonSquareMatrixEntryCount");
+        out.println("getHighEchelonSquareMatrixEntryCount");
 
         int exp_c1 = 6;
         /*
@@ -161,7 +187,7 @@ public class PairwiseCompareMatrixTest {
          */
         int c3 = PairwiseCompareMatrix.getHighEchelonSquareMatrixEntryCount(5);
         assertEquals(exp_c3, c3);
-
+        log.debug(new String(baos.toByteArray(),java.nio.charset.StandardCharsets.UTF_8));
     }
 
 }

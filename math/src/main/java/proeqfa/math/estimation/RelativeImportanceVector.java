@@ -1,6 +1,7 @@
 package proeqfa.math.estimation;
 
 import java.util.Arrays;
+
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 //import proeqfa.math.commons.MUtils;
@@ -10,11 +11,18 @@ import org.apache.commons.math3.linear.RealMatrix;
  */
 public class RelativeImportanceVector {
 
+    public interface ICalcListener { //calculate events listener, mainly for testing purposes
+        void onCalcStep(int step, RealMatrix stepResult);
+    }
+
+
     public final RealMatrix zero_K;
     private final double evaluationRate;
     private final int objCount;
 
     private RealMatrix K;
+
+    private ICalcListener calcListener;
 
     public RelativeImportanceVector(int objCount, double evaluationRate) {
         zero_K = MatrixUtils.createColumnRealMatrix(getEarray(objCount));
@@ -34,6 +42,7 @@ public class RelativeImportanceVector {
     public void calculate(double[][] estimationMatrix) {
 
         final RealMatrix X = MatrixUtils.createRealMatrix(estimationMatrix);
+        int step=0;
 
         checkMatrix(X);
 
@@ -62,6 +71,12 @@ public class RelativeImportanceVector {
             RealMatrix Minus = K.subtract(Kold);
 
             absMMax = getAbsMax(Minus);
+
+            step++;
+            if (calcListener!=null){
+                  calcListener.onCalcStep(step,K);
+            }
+
         } while (absMMax >= evaluationRate);
 
     }
@@ -109,4 +124,9 @@ public class RelativeImportanceVector {
     public RealMatrix getRelativeImportanceVector() {
         return K;
     }
+
+    public void setCalcListener(ICalcListener calcListener) {
+        this.calcListener = calcListener;
+    }
+
 }
