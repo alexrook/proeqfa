@@ -1,10 +1,9 @@
 package proeqfa.math.estimation;
 
-import java.util.Arrays;
-
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
-//import proeqfa.math.commons.MUtils;
+import proeqfa.math.commons.MUtils;
+
 
 /**
  * @author moroz
@@ -25,19 +24,13 @@ public class RelativeImportanceVector {
     private ICalcListener calcListener;
 
     public RelativeImportanceVector(int objCount, double evaluationRate) {
-        zero_K = MatrixUtils.createColumnRealMatrix(getEarray(objCount));
+        zero_K = MatrixUtils.createColumnRealMatrix(MUtils.getEarray(objCount));
         this.evaluationRate = evaluationRate;
         this.objCount = objCount;
         K = zero_K;
     }
 
-    public static double[] getEarray(int objCount) {
 
-        double[] ret = new double[objCount];
-        Arrays.fill(ret, 1);
-        return ret;
-
-    }
 
     public void calculate(double[][] estimationMatrix) {
 
@@ -48,7 +41,7 @@ public class RelativeImportanceVector {
 
         K = zero_K;
 
-        final RealMatrix Earray = MatrixUtils.createRowRealMatrix(getEarray(objCount));
+        final RealMatrix Earray = MatrixUtils.createRowRealMatrix(MUtils.getEarray(objCount));
 
         RealMatrix Kold;
 
@@ -84,14 +77,14 @@ public class RelativeImportanceVector {
     public void checkMatrix(RealMatrix X) {
 
         if ((X.getColumnDimension() != objCount) || (X.getRowDimension() != objCount)) {
-            throw new IllegalArgumentException("estimation matrix has unapporiate size");
+            throw new IllegalArgumentException("estimation matrix has inappropriate size");
         }
 
         for (int i = 0; i < X.getRowDimension(); i++) {
             for (int j = 0; j < X.getColumnDimension(); j++) {
                 double e = X.getEntry(i, j);
                 if (e < 0) {
-                    throw new IllegalArgumentException("estimation matrix must be nonnegative");
+                    throw new IllegalArgumentException("estimation matrix must be non-negative");
                 }
             }
         }
