@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import proeqfa.math.TestBase;
 import proeqfa.math.commons.Array2DUtils;
-import proeqfa.math.commons.MUtils;
 import proeqfa.math.estimation.u.LavRelativeImportanceVectorTestData03;
 
 import java.util.ArrayList;
@@ -222,7 +221,7 @@ public class RelativeImportanceVectorTest extends TestBase {
     public void testGetEarray() {
         out.println("getEarray");
         double[] expResult = {1, 1, 1};
-        double[] result = MUtils.getEarray(3);
+        double[] result = Array2DUtils.getEarray(3);
         assertArrayEquals(expResult, result, 0);
     }
 

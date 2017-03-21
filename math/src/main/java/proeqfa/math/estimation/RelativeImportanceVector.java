@@ -2,7 +2,7 @@ package proeqfa.math.estimation;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
-import proeqfa.math.commons.MUtils;
+import proeqfa.math.commons.Array2DUtils;
 
 
 /**
@@ -24,24 +24,23 @@ public class RelativeImportanceVector {
     private ICalcListener calcListener;
 
     public RelativeImportanceVector(int objCount, double evaluationRate) {
-        zero_K = MatrixUtils.createColumnRealMatrix(MUtils.getEarray(objCount));
+        zero_K = MatrixUtils.createColumnRealMatrix(Array2DUtils.getEarray(objCount));
         this.evaluationRate = evaluationRate;
         this.objCount = objCount;
         K = zero_K;
     }
 
 
-
     public void calculate(double[][] estimationMatrix) {
 
         final RealMatrix X = MatrixUtils.createRealMatrix(estimationMatrix);
-        int step=0;
+        int step = 0;
 
         checkMatrix(X);
 
         K = zero_K;
 
-        final RealMatrix Earray = MatrixUtils.createRowRealMatrix(MUtils.getEarray(objCount));
+        final RealMatrix Earray = MatrixUtils.createRowRealMatrix(Array2DUtils.getEarray(objCount));
 
         RealMatrix Kold;
 
@@ -66,8 +65,8 @@ public class RelativeImportanceVector {
             absMMax = getAbsMax(Minus);
 
             step++;
-            if (calcListener!=null){
-                  calcListener.onCalcStep(step,K);
+            if (calcListener != null) {
+                calcListener.onCalcStep(step, K);
             }
 
         } while (absMMax >= evaluationRate);
@@ -89,7 +88,7 @@ public class RelativeImportanceVector {
             }
         }
 
-//        double det = MUtils.determinant(X);
+//        double det = Array2DUtils.determinant(X);
 //
 //        if (det == 0d) {//Если две (или несколько) строки (столбца) 
 //            //матрицы линейно зависимы, то её определитель равен нулю
