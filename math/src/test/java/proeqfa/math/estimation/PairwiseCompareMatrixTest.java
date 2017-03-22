@@ -1,13 +1,9 @@
 package proeqfa.math.estimation;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import proeqfa.math.TestBase;
-
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +19,7 @@ public class PairwiseCompareMatrixTest extends TestBase {
     @Before
     @Override
     public void setUp() {
-        super.setUp();
+        super.setUp( );
     }
 
     @After

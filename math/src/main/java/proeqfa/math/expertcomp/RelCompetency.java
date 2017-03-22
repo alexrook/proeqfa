@@ -9,6 +9,11 @@ import proeqfa.math.commons.Array2DUtils;
  */
 public class RelCompetency {
 
+    public interface ICalcListener { //calculate events listener, mainly for testing purposes
+        void onCalcStep(int step, RealMatrix stepResult);
+    }
+
+
     public enum Relation {
 
         APPROVE(1), REJECT(0);
@@ -47,7 +52,8 @@ public class RelCompetency {
     private int change;
     private final double evaluationRate;
     boolean calculated = false;
-    RealMatrix K, zeroK;
+    private RealMatrix K, zeroK;
+    private ICalcListener listener;
 
     public RelCompetency(int expertCount, double evaluationRate) {
         data = new Double[expertCount][expertCount];
@@ -94,9 +100,59 @@ public class RelCompetency {
         return data;
     }
 
+    public RealMatrix getReMatrix() {
+        double[][] data = Array2DUtils.toPrimitive(getMatrix());
+        return MatrixUtils.createRealMatrix(data);
+    }
 
 
     public void calculate() {
+        RealMatrix oldK;
+        int step = 0;
+        K = zeroK;
+        double absMMax;
+        do {
+            oldK = K;
+            RealMatrix D = getReMatrix();
+
+            RealMatrix Y = zeroK.transpose().multiply(D.multiply(K));
+            assert Y.getColumnDimension() == 1;
+            assert Y.getRowDimension() == 1;
+            System.out.println(Y.getData()[0][0]);
+            double y = Y.getData()[0][0];
+
+            RealMatrix X = D.multiply(K);
+            K = X.scalarMultiply(1 / y);
+
+            RealMatrix Minus = K.subtract(oldK);
+
+            absMMax = getAbsMax(Minus);
+
+            if (listener != null) {
+                step++;
+                listener.onCalcStep(step, K);
+            }
+
+
+        } while (absMMax >= evaluationRate);
+
+
+    }
+
+    private double getAbsMax(RealMatrix M) {
+
+        double ret = Double.MIN_VALUE;
+
+        for (int i = 0; i < M.getRowDimension(); i++) {
+            for (int j = 0; j < M.getColumnDimension(); j++) {
+                double val = Math.abs(M.getEntry(i, j));
+                if (val > ret) {
+                    ret = val;
+                }
+            }
+        }
+
+        return ret;
 
     }
 
@@ -105,5 +161,9 @@ public class RelCompetency {
             calculate();
         }
         return K;
+    }
+
+    public void setListener(ICalcListener listener) {
+        this.listener = listener;
     }
 }

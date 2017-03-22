@@ -1,5 +1,6 @@
 package proeqfa.math.expertcomp;
 
+import org.apache.commons.math3.linear.RealMatrix;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,7 @@ public class RelCompetencyTest extends TestBase {
                 {0, 1, 0},
                 {1, 0, 1}
         };
+        dd_evaluationRate = 0.01;
     }
 
     @After
@@ -33,7 +35,7 @@ public class RelCompetencyTest extends TestBase {
     }
 
     @Test
-    public void fromArray() throws Exception {
+    public void testFromArray() throws Exception {
         RelCompetency instance = RelCompetency.fromArray(dd_expertsRelCompetency01, dd_evaluationRate);
         TestUtils.assert2DArrayEquals(
                 Array2DUtils.toPrimitive(instance.getMatrix()),
@@ -41,5 +43,24 @@ public class RelCompetencyTest extends TestBase {
         TestUtils.printMatrix(instance.getMatrix(), out);
     }
 
+    @Test
+    public void testGetRelCompetencyVector() throws Exception {
+        RelCompetency instance =
+                RelCompetency.fromArray(dd_expertsRelCompetency01, dd_evaluationRate);
+        TestUtils.assert2DArrayEquals(
+                Array2DUtils.toPrimitive(instance.getMatrix()),
+                dd_expertsRelCompetency01, 0);
+        //TestUtils.printMatrix(instance.getMatrix(), out);
 
+        instance.setListener(new RelCompetency.ICalcListener() {
+            @Override
+            public void onCalcStep(int step, RealMatrix stepResult) {
+                out.println("step=" + step);
+                TestUtils.printMatrix(stepResult.transpose().getData(), out);
+            }
+        });
+
+        RealMatrix m = instance.getRelCompetencyVector();
+        TestUtils.printMatrix(m.transpose().getData(), out);
+    }
 }
