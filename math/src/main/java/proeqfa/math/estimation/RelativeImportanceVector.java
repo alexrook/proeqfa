@@ -3,17 +3,13 @@ package proeqfa.math.estimation;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import proeqfa.math.commons.Array2DUtils;
+import proeqfa.math.commons.ICalcListener;
 
 
 /**
  * @author moroz
  */
 public class RelativeImportanceVector {
-
-    public interface ICalcListener { //calculate events listener, mainly for testing purposes
-        void onCalcStep(int step, RealMatrix stepResult);
-    }
-
 
     public final RealMatrix zero_K;
     private final double evaluationRate;
@@ -62,11 +58,13 @@ public class RelativeImportanceVector {
 
             RealMatrix Minus = K.subtract(Kold);
 
-            absMMax = getAbsMax(Minus);
+            absMMax = Array2DUtils.getAbsMax(Minus);
 
             step++;
             if (calcListener != null) {
-                calcListener.onCalcStep(step, K);
+                if (!calcListener.onCalcStep(step, K)) {
+                    break;
+                }
             }
 
         } while (absMMax >= evaluationRate);
@@ -96,22 +94,6 @@ public class RelativeImportanceVector {
 //        }
     }
 
-    private double getAbsMax(RealMatrix M) {
-
-        double ret = Double.MIN_VALUE;
-
-        for (int i = 0; i < M.getRowDimension(); i++) {
-            for (int j = 0; j < M.getColumnDimension(); j++) {
-                double val = Math.abs(M.getEntry(i, j));
-                if (val > ret) {
-                    ret = val;
-                }
-            }
-        }
-
-        return ret;
-
-    }
 
     public RealMatrix getRelativeImportanceVector() {
         return K;

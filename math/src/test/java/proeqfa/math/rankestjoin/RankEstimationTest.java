@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import proeqfa.math.TestBase;
 import proeqfa.math.commons.Array2DUtils;
+import proeqfa.math.commons.ICalcListener;
 import proeqfa.math.estimation.*;
 import proeqfa.math.rank.NaturalOrderPosition2Rank;
 import proeqfa.math.rank.RankChain;
@@ -131,11 +132,12 @@ public class RankEstimationTest extends TestBase {
 
         RelativeImportanceVector vector = new RelativeImportanceVector(DD_OBJ_COUNT, DD_EVALUATION_RATE);
 
-        vector.setCalcListener(new RelativeImportanceVector.ICalcListener() {
+        vector.setCalcListener(new ICalcListener() {
             @Override
-            public void onCalcStep(int step, RealMatrix stepResult) {
+            public boolean onCalcStep(int step, RealMatrix stepResult) {
                 out.println("relative importance vector calc step=" + step);
                 TestUtils.printMatrix(stepResult.getData(), out, 3, 3);
+                return true;
             }
         });
 

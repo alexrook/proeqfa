@@ -3,16 +3,12 @@ package proeqfa.math.expertcomp;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import proeqfa.math.commons.Array2DUtils;
+import proeqfa.math.commons.ICalcListener;
 
 /**
  * Created by moroz on 21.03.17.
  */
 public class RelCompetency {
-
-    public interface ICalcListener { //calculate events listener, mainly for testing purposes
-        void onCalcStep(int step, RealMatrix stepResult);
-    }
-
 
     public enum Relation {
 
@@ -108,29 +104,35 @@ public class RelCompetency {
 
     public void calculate() {
         RealMatrix oldK;
+        RealMatrix data=getReMatrix();
         int step = 0;
-        K = zeroK;
+
         double absMMax;
+
+        K = zeroK;
+
         do {
             oldK = K;
-            RealMatrix D = getReMatrix();
 
-            RealMatrix Y = zeroK.transpose().multiply(D.multiply(K));
+            RealMatrix D = data.multiply(K);
+
+            RealMatrix Y = zeroK.transpose().multiply(D);
+
             assert Y.getColumnDimension() == 1;
             assert Y.getRowDimension() == 1;
-            System.out.println(Y.getData()[0][0]);
             double y = Y.getData()[0][0];
 
-            RealMatrix X = D.multiply(K);
-            K = X.scalarMultiply(1 / y);
+            K = D.scalarMultiply(1 / y);
 
             RealMatrix Minus = K.subtract(oldK);
 
-            absMMax = getAbsMax(Minus);
+            absMMax = Array2DUtils.getAbsMax(Minus);
 
             if (listener != null) {
                 step++;
-                listener.onCalcStep(step, K);
+               if (!listener.onCalcStep(step, K)) {
+                   break;
+               }
             }
 
 
@@ -139,22 +141,6 @@ public class RelCompetency {
 
     }
 
-    private double getAbsMax(RealMatrix M) {
-
-        double ret = Double.MIN_VALUE;
-
-        for (int i = 0; i < M.getRowDimension(); i++) {
-            for (int j = 0; j < M.getColumnDimension(); j++) {
-                double val = Math.abs(M.getEntry(i, j));
-                if (val > ret) {
-                    ret = val;
-                }
-            }
-        }
-
-        return ret;
-
-    }
 
     public RealMatrix getRelCompetencyVector() {
         if (!calculated) {

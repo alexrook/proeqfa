@@ -6,15 +6,17 @@ import org.junit.Before;
 import org.junit.Test;
 import proeqfa.math.TestBase;
 import proeqfa.math.commons.Array2DUtils;
+import proeqfa.math.commons.ICalcListener;
 import proeqfa.math.estimation.TestUtils;
 
 /**
  * Created by moroz on 21.03.17.
  */
 public class RelCompetencyTest extends TestBase {
-
+    /*dd doc test data A.2.1*/
     private double[][] dd_expertsRelCompetency01;
     private double dd_evaluationRate;
+    private double[][] dd_compVector;
 
     @Before
     @Override
@@ -26,6 +28,11 @@ public class RelCompetencyTest extends TestBase {
                 {1, 0, 1}
         };
         dd_evaluationRate = 0.01;
+         dd_compVector = new double[][]{
+                {0.5},
+                {0.01},
+                {0.49}
+        };
     }
 
     @After
@@ -52,15 +59,20 @@ public class RelCompetencyTest extends TestBase {
                 dd_expertsRelCompetency01, 0);
         //TestUtils.printMatrix(instance.getMatrix(), out);
 
-        instance.setListener(new RelCompetency.ICalcListener() {
+        instance.setListener(new ICalcListener() {
             @Override
-            public void onCalcStep(int step, RealMatrix stepResult) {
+            public boolean onCalcStep(int step, RealMatrix stepResult) {
                 out.println("step=" + step);
                 TestUtils.printMatrix(stepResult.transpose().getData(), out);
+                return true;
             }
         });
 
         RealMatrix m = instance.getRelCompetencyVector();
+        TestUtils.assert2DArrayEquals(
+                m.getData(),
+                dd_compVector,dd_evaluationRate);
+        out.println("competence vector:");
         TestUtils.printMatrix(m.transpose().getData(), out);
     }
 }

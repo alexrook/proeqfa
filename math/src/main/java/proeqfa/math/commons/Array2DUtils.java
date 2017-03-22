@@ -64,4 +64,21 @@ public class Array2DUtils {
         Arrays.fill(ret, 1);
         return ret;
     }
+
+    public static double getAbsMax(RealMatrix M) {
+
+        double ret = Double.MIN_VALUE;
+
+        for (int i = 0; i < M.getRowDimension(); i++) {
+            for (int j = 0; j < M.getColumnDimension(); j++) {
+                double val = Math.abs(M.getEntry(i, j));
+                if (val > ret) {
+                    ret = val;
+                }
+            }
+        }
+
+        return ret;
+
+    }
 }
