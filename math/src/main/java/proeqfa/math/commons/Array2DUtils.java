@@ -42,7 +42,7 @@ public class Array2DUtils {
         } else if (array.length == 0) {
             return EMPTY_DOUBLE_OBJ_2D_ARRAY;
         }
-        int rows=array.length;
+        int rows = array.length;
         final Double[][] result = new Double[rows][];
         for (int i = 0; i < rows; i++) {
             int columns = array[i].length;
@@ -67,7 +67,7 @@ public class Array2DUtils {
 
     public static double getAbsMax(RealMatrix M) {
 
-        double ret = Double.MIN_VALUE;
+        double ret = -Double.MAX_VALUE;
 
         for (int i = 0; i < M.getRowDimension(); i++) {
             for (int j = 0; j < M.getColumnDimension(); j++) {
