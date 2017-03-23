@@ -49,15 +49,16 @@ public class RelCompetency {
     private int change;
     private final double evaluationRate;
     boolean calculated = false;
-    private RealMatrix K, zeroK;
+    private RealMatrix K, K_step_0,zero_K;
     private ICalcListener listener;
 
     public RelCompetency(int expertCount, double evaluationRate) {
         data = new Double[expertCount][expertCount];
         change = expertCount * expertCount;
         this.evaluationRate = evaluationRate;
-        zeroK = MatrixUtils.createColumnRealMatrix(Array2DUtils.getEarray(expertCount));
-        K = zeroK;
+        K_step_0 = MatrixUtils.createColumnRealMatrix(Array2DUtils.getEarray(expertCount));
+        K = K_step_0;
+        zero_K=MatrixUtils.createRealMatrix(new double[expertCount][expertCount]);
     }
 
     public static RelCompetency fromArray(double[][] relArray, double evaluationRate) {
@@ -110,19 +111,22 @@ public class RelCompetency {
 
         double absMMax;
 
-        K = zeroK;
+        K = K_step_0;
 
         do {
             oldK = K;
 
             RealMatrix D = data.multiply(K);
 
-            RealMatrix Y = zeroK.transpose().multiply(D);
+            RealMatrix Y = K_step_0.transpose().multiply(D);
 
             assert Y.getColumnDimension() == 1;
             assert Y.getRowDimension() == 1;
             double y = Y.getData()[0][0];
-
+            if (y==0){//no one approve for others or self
+                K=zero_K;
+                break;
+            }
             K = D.scalarMultiply(1 / y);
 
             RealMatrix Minus = K.subtract(oldK);
