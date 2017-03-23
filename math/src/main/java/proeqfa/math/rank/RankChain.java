@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * @author moroz
+ *         see appendix A.1.2
  */
 public class RankChain implements Iterable<RankChain.RankedObject> {
 

@@ -4,6 +4,7 @@ import java.util.TreeSet;
 
 /**
  * @author moroz
+ *         see appendix A.1.1
  */
 public class ThreeLogicValues extends TreeSet<Double> {
 

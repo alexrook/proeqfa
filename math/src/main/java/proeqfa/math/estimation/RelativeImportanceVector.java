@@ -8,6 +8,7 @@ import proeqfa.math.commons.ICalcListener;
 
 /**
  * @author moroz
+ *         see appendix A.1.1
  */
 public class RelativeImportanceVector {
 

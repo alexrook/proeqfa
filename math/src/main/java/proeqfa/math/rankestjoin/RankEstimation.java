@@ -8,9 +8,9 @@ import proeqfa.math.rank.RankChain;
 import java.util.List;
 
 
-
 /**
  * Created by moroz on 17.03.17.
+ * see appendix A.1.3
  */
 public class RankEstimation {
 
@@ -36,8 +36,8 @@ public class RankEstimation {
 
 
     public static PairwiseCompareMatrix toPairwiseCompareMatrix(RankChain rankChain,
-                                                            int objectCount,
-                                                            ThreeLogicValues logicValues) {
+                                                                int objectCount,
+                                                                ThreeLogicValues logicValues) {
         PairwiseCompareMatrix ret = new PairwiseCompareMatrix(
                 objectCount,
                 logicValues);

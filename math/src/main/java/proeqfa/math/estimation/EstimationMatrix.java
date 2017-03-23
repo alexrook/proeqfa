@@ -2,6 +2,7 @@ package proeqfa.math.estimation;
 
 /**
  * @author moroz
+ *         see appendix A.1.1
  */
 public class EstimationMatrix {
 

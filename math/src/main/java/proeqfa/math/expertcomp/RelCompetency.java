@@ -7,6 +7,7 @@ import proeqfa.math.commons.ICalcListener;
 
 /**
  * Created by moroz on 21.03.17.
+ * see appendix A.2.1
  */
 public class RelCompetency {
 
@@ -104,7 +105,7 @@ public class RelCompetency {
 
     public void calculate() {
         RealMatrix oldK;
-        RealMatrix data=getReMatrix();
+        RealMatrix data = getReMatrix();
         int step = 0;
 
         double absMMax;
@@ -130,9 +131,9 @@ public class RelCompetency {
 
             if (listener != null) {
                 step++;
-               if (!listener.onCalcStep(step, K)) {
-                   break;
-               }
+                if (!listener.onCalcStep(step, K)) {
+                    break;
+                }
             }
 
 

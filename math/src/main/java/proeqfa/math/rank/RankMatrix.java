@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Created by moroz on 16.03.17.
+ * see appendix A.1.2
  */
 public class RankMatrix {
 

@@ -2,6 +2,7 @@ package proeqfa.math.estimation;
 
 /**
  * @author moroz
+ *         see appendix A.1.1
  */
 public class PairwiseCompareMatrix {
 
@@ -10,8 +11,7 @@ public class PairwiseCompareMatrix {
     private int notInitPairCount, objCount;
 
     /**
-     *
-     * @param objCount count of object for pairwise compare
+     * @param objCount    count of object for pairwise compare
      * @param logicValues three logic values
      */
     public PairwiseCompareMatrix(int objCount, ThreeLogicValues logicValues) {
@@ -78,10 +78,9 @@ public class PairwiseCompareMatrix {
     }
 
     /**
-     *
-     * @param start element of progression
+     * @param start  element of progression
      * @param finish element
-     * @param step of elements
+     * @param step   of elements
      * @return sum of elements of revert progression i.e 9, 7, 5, 3, 1 =25
      */
     static int getRevertProgressionSum(int start, int finish, int step) {
