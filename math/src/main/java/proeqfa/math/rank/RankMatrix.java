@@ -51,7 +51,7 @@ public class RankMatrix {
     public RankChain.RankedObject getMaxRankObject() {
         double[] sums = getRankedObjectsSums();
         int id = -1;
-        double rank = Double.MIN_VALUE;
+        double rank = -Double.MAX_VALUE;//MIN_VALUE holds the smallest POSITIVE nonzero value of type
         for (int i = 0; i < sums.length; i++) {
             if (rank < sums[i]) {
                 rank = sums[i];
