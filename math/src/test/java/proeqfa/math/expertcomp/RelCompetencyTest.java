@@ -26,6 +26,9 @@ public class RelCompetencyTest extends TestBase {
     private double ud_acad_evaluationRate01;
     private double[][] ud_acad_compVector01;
 
+    private double[][] ud_brahma_expertsRelCompetency01;
+    private double ud_brahma_evaluationRate01;
+    private double[][] ud_brahma_compVector01;
 
     @Before
     @Override
@@ -43,7 +46,8 @@ public class RelCompetencyTest extends TestBase {
                 {0.01},
                 {0.49}
         };
-        //user data
+        /*user data*/
+        //acad
         ud_acad_expertsRelCompetency01 = new double[][]{
                 {1, 1, 1, 1},
                 {0, 1, 1, 0},
@@ -56,6 +60,20 @@ public class RelCompetencyTest extends TestBase {
                 {0.110},
                 {0.008},
                 {0.008}
+        };
+        //brahma
+        ud_brahma_expertsRelCompetency01 = new double[][]{
+                {1, 1, 1, 1},
+                {0, 1, 0, 1},
+                {1, 0, 1, 1},
+                {0, 0, 1, 1}
+        };
+        ud_brahma_evaluationRate01 = 0.01;
+        ud_brahma_compVector01 = new double[][]{
+                {0.372},
+                {0.111},
+                {0.329},
+                {0.188}
         };
     }
 
@@ -126,6 +144,37 @@ public class RelCompetencyTest extends TestBase {
         TestUtils.assert2DArrayEquals(
                 m.getData(),
                 ud_acad_compVector01, ud_acad_evaluationRate01);
+        out.println("competence vector:");
+        TestUtils.printMatrix(m.transpose().getData(), out);
+    }
+
+    @Test
+    public void test_ud_brahma_GetRelCompetencyVector01() throws Exception {
+        final NumberFormat format = NumberFormat.getInstance(Locale.US);
+        format.setMaximumFractionDigits(3);
+
+
+        RelCompetency instance =
+                RelCompetency.fromArray(ud_brahma_expertsRelCompetency01,
+                        ud_brahma_evaluationRate01);
+        TestUtils.assert2DArrayEquals(
+                Array2DUtils.toPrimitive(instance.getMatrix()),
+                ud_brahma_expertsRelCompetency01, 0);
+        TestUtils.printMatrix(instance.getMatrix(), out);
+
+        instance.setListener(new ICalcListener() {
+            @Override
+            public boolean onCalcStep(int step, RealMatrix stepResult) {
+                out.print("k" + step + "=");
+                TestUtils.printMatrix(stepResult.transpose().getData(), out, format);
+                return true;
+            }
+        });
+
+        RealMatrix m = instance.getRelCompetencyVector();
+        TestUtils.assert2DArrayEquals(
+                m.getData(),
+                ud_brahma_compVector01, ud_brahma_evaluationRate01);
         out.println("competence vector:");
         TestUtils.printMatrix(m.transpose().getData(), out);
     }
