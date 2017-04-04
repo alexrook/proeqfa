@@ -10,25 +10,38 @@ import java.util.ArrayList;
  */
 public class EventsByPeriod {
 
-    private int equipmentCount, eventsPeriodLength, eventPointPrecision;
+    private boolean autoPrecision;
+    private int eventsPeriodLength, eventPointPrecision;
     private double periodSize;
     private ArrayList<Double> events = new ArrayList<>(133);
 
 
-    public EventsByPeriod(int equipmentCount,
-                          int eventsPeriodLength,
+    public EventsByPeriod(int eventsPeriodLength,
                           int eventPointPrecision) {
-        this.equipmentCount = equipmentCount;
         this.eventsPeriodLength = eventsPeriodLength;
         this.eventPointPrecision = eventPointPrecision;
     }
 
+    public EventsByPeriod(int eventsPeriodLength) {
+        this.eventsPeriodLength = eventsPeriodLength;
+        autoPrecision = true;
+    }
+
     public void addEvent(double eventPoint) {
+        setPrecision(eventPoint);
         events.add(eventPoint);
     }
 
+    private void setPrecision(double eventPoint) {
+        if (autoPrecision) {
+            BigDecimal v = BigDecimal.valueOf(eventPoint);
+            eventPointPrecision = eventPointPrecision < v.scale() ? v.scale() : eventPointPrecision;
+        }
+    }
+
     public double getPeriodSize() {
-        periodSize = round(eventsPeriodLength / getPeriodCountBySturgesRule(getEventsCount()));
+        double periodCountByRule = getPeriodCountBySturgesRule(getEventsCount());
+        periodSize = round(eventsPeriodLength / periodCountByRule, eventPointPrecision);
         return periodSize;
     }
 
@@ -40,31 +53,46 @@ public class EventsByPeriod {
         return getPeriodCountBySturgesRule(getEventsCount());
     }
 
+    protected double getPeriodHighBoundary(int period) {
+        return period == getPeriodsCount() ?
+                getPeriodSize() * period
+                        + MathUtils.getMinValueForScale(eventPointPrecision) : getPeriodSize() * period;
+    }
+
+    protected double getPeriodLowBoundary(int period) {
+        return period == 1 ? 0 - MathUtils.getMinValueForScale(eventPointPrecision) : getPeriodSize() * (period - 1);
+    }
 
     public int getEventsCountByPeriod(int period) {
-        double periodHigh = period == getPeriodsCount() ? getPeriodSize() * period + 1 : getPeriodSize() * period;
-        double periodLow = period == 1 ? 0 - 1 : getPeriodSize() * (period - 1);
+        double periodHigh = getPeriodHighBoundary(period);
+        double periodLow = getPeriodLowBoundary(period);
         int ret = 0;
         for (Double event : events) {
-            if ((event > periodLow) && (event < periodHigh)) {
+            if (((event > periodLow)
+                    && (event < periodHigh))
+                    || (event == periodHigh)) {
                 ret++;
             }
-
         }
         return ret;
     }
 
+    /**
+     * @param eventsCount число событий
+     * @return целое число периодов по правилу Стерджеса
+     * TODO:do you really need an integer number of periods?
+     */
     public static int getPeriodCountBySturgesRule(int eventsCount) {
         double k = 1d;
         if (eventsCount > 0) {
-            k = MathUtils.round(1d + 3.3d * Math.log10(eventsCount)
-                    , 0, BigDecimal.ROUND_HALF_UP);
+            k = round(1d + 3.3d * Math.log10(eventsCount), 0);
         }
         return (int) k;
     }
 
-    private double round(double value) {
-        return MathUtils.round(value, eventPointPrecision, BigDecimal.ROUND_HALF_UP);
+    protected static double round(double value, int digitsAfterDecimalPoint) {
+        return MathUtils.round(value, digitsAfterDecimalPoint, BigDecimal.ROUND_HALF_UP);
     }
+
 
 }
