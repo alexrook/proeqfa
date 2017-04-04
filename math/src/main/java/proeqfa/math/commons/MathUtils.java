@@ -1,6 +1,7 @@
 package proeqfa.math.commons;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * Created by moroz on 03.04.17.
@@ -11,17 +12,21 @@ public class MathUtils {
     /**
      *  approximates double precision specified
      * @param value
-     * @param numberOfDigitsAfterDecimalPoint
+     * @param digitsAfterDecimalPoint
      * @param roundHalf - BigDecimal.ROUND_HALF_?
      * @return rounded value
      */
     public static double round(double value,
-                               int numberOfDigitsAfterDecimalPoint,
+                               int digitsAfterDecimalPoint,
                                int roundHalf) {
 
         BigDecimal bigDecimal = new BigDecimal(value);
-        bigDecimal = bigDecimal.setScale(numberOfDigitsAfterDecimalPoint,
+        bigDecimal = bigDecimal.setScale(digitsAfterDecimalPoint,
                 roundHalf);
         return bigDecimal.doubleValue();
+    }
+
+    public static double getMinValueForScale(int digitsAfterDecimalPoint) {
+        return new BigDecimal(BigInteger.valueOf(1), digitsAfterDecimalPoint).doubleValue();
     }
 }
