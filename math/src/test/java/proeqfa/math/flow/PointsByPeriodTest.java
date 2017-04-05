@@ -33,8 +33,8 @@ public class PointsByPeriodTest extends TestBase {
 //        out.println("precision=" + a.precision());
 //        out.println("scale=" + a.scale());
 //        out.println("unscaled= " + a.unscaledValue());
-        assertEquals(3.5, PointsByPeriod.round(3.5, 2),0d);
-        assertEquals(0.001,MathUtils.getMinValueForScale(3),0d);
+        assertEquals(3.5, PointsByPeriod.round(3.5, 2), 0d);
+        assertEquals(0.001, MathUtils.getMinValueForScale(3), 0d);
     }
 
     @Test
@@ -142,5 +142,78 @@ public class PointsByPeriodTest extends TestBase {
         assertEquals(4, instance.getPointsCountByPeriod(3));
         assertEquals(2, instance.getPointsCountByPeriod(4));
         assertEquals(2, instance.getPointsCountByPeriod(5));
+    }
+
+    @Test
+    public void test_user_data02_diapason() {
+        PointsByPeriod instance = new PointsByPeriod(
+                7.4, 2);
+        all_user_data02_diapason_tester(instance);
+    }
+
+    @Test
+    public void test_user_data02_diapason_autoPrecision() {
+        PointsByPeriod instance = new PointsByPeriod(
+                7.4);
+        all_user_data02_diapason_tester(instance);
+    }
+
+
+    private void all_user_data02_diapason_tester(PointsByPeriod instance) {
+
+        //period 1
+        instance.addPoint(0.25);
+        instance.addPoint(0.71);
+        instance.addPoint(0.97);
+        instance.addPoint(1.5);
+        //period 2
+        instance.addPoint(2.2);
+        instance.addPoint(2.9);
+        //period 3
+        instance.addPoint(4.1);
+        instance.addPoint(4.7);
+        //period 4
+        instance.addPoint(6.53);
+
+        assertEquals(9, instance.getPointsCount());
+        assertEquals(4, instance.getPeriodsCount());
+        assertEquals(1.85, instance.getPeriodSize(), 0d);
+
+        assertEquals(4, instance.getPointsCountByPeriod(1));
+        assertEquals(2, instance.getPointsCountByPeriod(2));
+        assertEquals(2, instance.getPointsCountByPeriod(3));
+        assertEquals(1, instance.getPointsCountByPeriod(4));
+
+    }
+
+    @Test
+    public void stress_01() {
+        PointsByPeriod instance = new PointsByPeriod(
+                7.4, -2);
+        assertEquals(0, instance.getCalcPrecision());
+        assertEquals(7d, instance.getPeriodSize(), 0d); //precision=0, round(7.4) ->7
+        assertEquals(1, instance.getPeriodsCount());
+    }
+
+
+    @Test
+    public void stress_02() {
+        PointsByPeriod instance = new PointsByPeriod(
+                -1, -2);
+        assertEquals(0d, instance.getPeriodSize(), 0d);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void stress_03() {
+        PointsByPeriod instance = new PointsByPeriod(
+                -1, -2);
+        instance.addPoint(1);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void stress_04() {
+        PointsByPeriod instance = new PointsByPeriod(
+                3, 2);
+        instance.addPoint(3.1); //diapason=3, precision=2, high boundary  -> 3.01
     }
 }
