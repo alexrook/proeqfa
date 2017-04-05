@@ -12,37 +12,60 @@ public class PointsByPeriod {
 
     private boolean autoPrecision;
     private double diapasonSize;
-    private int pointPrecision;
+    private int calcPrecision;
     private double periodSize;
     private ArrayList<Double> points = new ArrayList<>(133);
 
 
     public PointsByPeriod(double diapasonSize,
-                          int pointPrecision) {
-        this.diapasonSize = diapasonSize;
-        this.pointPrecision = pointPrecision;
+                          int calcPrecision) {
+        setDiapasonSize(diapasonSize);
+        if (calcPrecision >= 0) {
+            this.calcPrecision = calcPrecision;
+        }
     }
 
     public PointsByPeriod(double diapasonSize) {
-        this.diapasonSize = diapasonSize;
+        setDiapasonSize(diapasonSize);
         autoPrecision = true;
     }
 
-    public void addPoint(double point) {
-        setPrecision(point);
-        points.add(point);
+    public void setDiapasonSize(double diapasonSize) {
+        if (diapasonSize >= 0) {
+            this.diapasonSize = diapasonSize;
+        } else {
+            this.diapasonSize = 0;
+        }
     }
 
-    private void setPrecision(double point) {
+    public void addPoint(double point) {
+
+        double diapasonHigh = diapasonSize + MathUtils.getMinValueForScale(getCalcPrecision());
+        double diapasonLow = 0 - MathUtils.getMinValueForScale(getCalcPrecision());
+
+        if ((diapasonSize == 0)
+                || (point > diapasonHigh)
+                || (point < diapasonLow)) {
+            throw new IllegalArgumentException("out-of-range point:" + point
+                    + ", diapason:" + diapasonSize);
+        }
+
+        setCalcPrecision(point);
+
+        points.add(point);
+
+    }
+
+    private void setCalcPrecision(double point) {
         if (autoPrecision) {
             BigDecimal p = BigDecimal.valueOf(point);
-            pointPrecision = pointPrecision < p.scale() ? p.scale() : pointPrecision;
+            calcPrecision = calcPrecision < p.scale() ? p.scale() : calcPrecision;
         }
     }
 
     public double getPeriodSize() {
         double periodCount = getPeriodsCount();
-        periodSize = round(diapasonSize / periodCount, pointPrecision);
+        periodSize = round(diapasonSize / periodCount, calcPrecision);
         return periodSize;
     }
 
@@ -57,11 +80,11 @@ public class PointsByPeriod {
     protected double getPeriodHighBoundary(int period) {
         return period == getPeriodsCount() ?
                 getPeriodSize() * period
-                        + MathUtils.getMinValueForScale(pointPrecision) : getPeriodSize() * period;
+                        + MathUtils.getMinValueForScale(calcPrecision) : getPeriodSize() * period;
     }
 
     protected double getPeriodLowBoundary(int period) {
-        return period == 1 ? 0 - MathUtils.getMinValueForScale(pointPrecision) : getPeriodSize() * (period - 1);
+        return period == 1 ? 0 - MathUtils.getMinValueForScale(calcPrecision) : getPeriodSize() * (period - 1);
     }
 
     public int getPointsCountByPeriod(int period) {
@@ -76,6 +99,10 @@ public class PointsByPeriod {
             }
         }
         return ret;
+    }
+
+    public int getCalcPrecision() {
+        return calcPrecision;
     }
 
     /**
