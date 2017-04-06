@@ -30,7 +30,7 @@ public class PointsByPeriod {
         autoPrecision = true;
     }
 
-    public void setDiapasonSize(double diapasonSize) {
+    protected void setDiapasonSize(double diapasonSize) {
         if (diapasonSize >= 0) {
             this.diapasonSize = diapasonSize;
         } else {
@@ -40,20 +40,26 @@ public class PointsByPeriod {
 
     public void addPoint(double point) {
 
-        double diapasonHigh = diapasonSize + MathUtils.getMinValueForScale(getCalcPrecision());
-        double diapasonLow = 0 - MathUtils.getMinValueForScale(getCalcPrecision());
-
-        if ((diapasonSize == 0)
-                || (point > diapasonHigh)
-                || (point < diapasonLow)) {
+        if (!checkValue(point)) {
             throw new IllegalArgumentException("out-of-range point:" + point
                     + ", diapason:" + diapasonSize);
         }
-
         setCalcPrecision(point);
 
         points.add(point);
 
+    }
+
+    protected boolean checkValue(double value) {
+        double diapasonHigh = diapasonSize + MathUtils.getMinValueForScale(getCalcPrecision());
+        double diapasonLow = 0 - MathUtils.getMinValueForScale(getCalcPrecision());
+
+        if ((diapasonSize == 0)
+                || (value > diapasonHigh)
+                || (value < diapasonLow)) {
+            return false;
+        }
+        return true;
     }
 
     private void setCalcPrecision(double point) {
@@ -64,8 +70,7 @@ public class PointsByPeriod {
     }
 
     public double getPeriodSize() {
-        double periodCount = getPeriodsCount();
-        periodSize = round(diapasonSize / periodCount, calcPrecision);
+        periodSize = round(diapasonSize / getPeriodsCount(), calcPrecision);
         return periodSize;
     }
 
@@ -80,11 +85,11 @@ public class PointsByPeriod {
     protected double getPeriodHighBoundary(int period) {
         return period == getPeriodsCount() ?
                 getPeriodSize() * period
-                        + MathUtils.getMinValueForScale(calcPrecision) : getPeriodSize() * period;
+                        + MathUtils.getMinValueForScale(getCalcPrecision()) : getPeriodSize() * period;
     }
 
     protected double getPeriodLowBoundary(int period) {
-        return period == 1 ? 0 - MathUtils.getMinValueForScale(calcPrecision) : getPeriodSize() * (period - 1);
+        return period == 1 ? 0 - MathUtils.getMinValueForScale(getCalcPrecision()) : getPeriodSize() * (period - 1);
     }
 
     public int getPointsCountByPeriod(int period) {
@@ -103,6 +108,10 @@ public class PointsByPeriod {
 
     public int getCalcPrecision() {
         return calcPrecision;
+    }
+
+    public double getDiapasonSize() {
+        return diapasonSize;
     }
 
     /**
