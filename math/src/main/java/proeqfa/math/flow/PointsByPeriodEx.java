@@ -1,5 +1,7 @@
 package proeqfa.math.flow;
 
+import proeqfa.math.commons.MathUtils;
+
 /**
  * Created by moroz on 05.04.17.
  */
@@ -12,7 +14,7 @@ public class PointsByPeriodEx extends PointsByPeriod {
     private static final double NON_SET_PERIOD_SIZE = -1d;
     private static final int NON_SET_PERIOD_COUNT = -1;
 
-    PeriodsBoundaryAlignment periodsAlign;
+    PeriodsBoundaryAlignment periodsAlign = PeriodsBoundaryAlignment.NONE;
     private double customPeriodSize = NON_SET_PERIOD_SIZE, shorterPeriodSize = NON_SET_PERIOD_SIZE;
     private int customPeriodsCount = NON_SET_PERIOD_COUNT;
 
@@ -31,6 +33,7 @@ public class PointsByPeriodEx extends PointsByPeriod {
                     + ", diapason:" + getDiapasonSize());
         }
         this.periodsAlign = periodsAlign;
+        this.customPeriodSize = periodSize;
         calculate();
     }
 
@@ -39,7 +42,7 @@ public class PointsByPeriodEx extends PointsByPeriod {
             customPeriodsCount = (int) (getDiapasonSize() / customPeriodSize);
             shorterPeriodSize = round(getDiapasonSize() - customPeriodSize * customPeriodsCount, getCalcPrecision());
             if (shorterPeriodSize > 0) {
-                customPeriodSize++;
+                customPeriodsCount++;
                 if (periodsAlign == PeriodsBoundaryAlignment.NONE) {
                     throw new IllegalArgumentException("unsupported boundary alignment for diapason="
                             + getDiapasonSize()
@@ -49,6 +52,25 @@ public class PointsByPeriodEx extends PointsByPeriod {
         } else {
             //TODO
         }
+    }
+
+    @Override
+    protected double getPeriodHighBoundary(int period) {
+        switch (periodsAlign) {
+            case HIGH: {
+                if (period == getPeriodsCount()) {
+                    return getDiapasonSize() + MathUtils.getMinValueForScale(getCalcPrecision());
+                }
+            }
+            case LOW: {
+                if (period == 1) {
+                    return shorterPeriodSize + MathUtils.getMinValueForScale(getCalcPrecision());
+                }
+            }
+            default:
+                return super.getPeriodHighBoundary(period);
+        }
+
     }
 
     @Override

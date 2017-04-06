@@ -108,9 +108,16 @@ public class PointsByPeriodExTest extends TestBase {
                 20);
         fill_instance_with_doc_points(instance);
 
-        instance.setPeriodSize(2.1,PointsByPeriodEx.PeriodsBoundaryAlignment.HIGH);
+        instance.setPeriodSize(2.1, PointsByPeriodEx.PeriodsBoundaryAlignment.HIGH);
+        assertEquals(10, instance.getPeriodsCount());
+        assertEquals(1.1, instance.getShorterPeriodSize(), 0d);
+        assertEquals(2.1, instance.getPeriodSize(), 0d);
+        assertEquals(18.9, instance.getPeriodLowBoundary(10), 0d);
+        assertEquals(20.01, instance.getPeriodHighBoundary(10), 0d); //precision=2
+        assertEquals(6.3, instance.getPeriodHighBoundary(3), 0d); //3*2.1
+        assertEquals(4.2, instance.getPeriodLowBoundary(3), 0d); //2*2.1
 
-
+        
 
     }
 
