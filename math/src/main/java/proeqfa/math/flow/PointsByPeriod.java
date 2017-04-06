@@ -83,13 +83,14 @@ public class PointsByPeriod {
     }
 
     protected double getPeriodHighBoundary(int period) {
+        double r = round(getPeriodSize() * period, getCalcPrecision());
         return period == getPeriodsCount() ?
-                getPeriodSize() * period
-                        + MathUtils.getMinValueForScale(getCalcPrecision()) : getPeriodSize() * period;
+                r + MathUtils.getMinValueForScale(getCalcPrecision()) : r;
     }
 
     protected double getPeriodLowBoundary(int period) {
-        return period == 1 ? 0 - MathUtils.getMinValueForScale(getCalcPrecision()) : getPeriodSize() * (period - 1);
+        double r = round(getPeriodSize() * (period - 1), getCalcPrecision());//try 9*2.1 and see why round here
+        return period == 1 ? 0 - MathUtils.getMinValueForScale(getCalcPrecision()) : r;
     }
 
     public int getPointsCountByPeriod(int period) {
