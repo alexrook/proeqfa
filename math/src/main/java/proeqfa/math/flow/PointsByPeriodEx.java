@@ -61,16 +61,39 @@ public class PointsByPeriodEx extends PointsByPeriod {
                 if (period == getPeriodsCount()) {
                     return getDiapasonSize() + MathUtils.getMinValueForScale(getCalcPrecision());
                 }
+                return super.getPeriodHighBoundary(period);
+
             }
             case LOW: {
+                double r = getPeriodSize() * (period - 1);
                 if (period == 1) {
-                    return shorterPeriodSize + MathUtils.getMinValueForScale(getCalcPrecision());
+                    return round(shorterPeriodSize, getCalcPrecision());
+                } else if (period == getPeriodsCount()) {
+                    return round(shorterPeriodSize + r + MathUtils.getMinValueForScale(getCalcPrecision()), getCalcPrecision());
+                } else {
+                    return round(shorterPeriodSize + r, getCalcPrecision());
                 }
             }
             default:
                 return super.getPeriodHighBoundary(period);
         }
 
+    }
+
+    @Override
+    protected double getPeriodLowBoundary(int period) {
+        switch (periodsAlign) {
+            case LOW: {
+                if (period > 1) {
+                    return round(shorterPeriodSize + getPeriodSize() * (period - 2) //diapason-shorter-other_periods
+                            , getCalcPrecision()
+                    );
+                }
+                return super.getPeriodLowBoundary(period);
+            }
+            default:
+                return super.getPeriodLowBoundary(period);
+        }
     }
 
     @Override
