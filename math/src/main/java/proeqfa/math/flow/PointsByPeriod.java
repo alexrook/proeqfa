@@ -85,7 +85,7 @@ public class PointsByPeriod {
     protected double getPeriodHighBoundary(int period) {
         double r = round(getPeriodSize() * period);
         return period == getPeriodsCount() ?
-                getDiapasonSize() + getMinVal() : r;
+                round(getDiapasonSize() + getMinVal()) : r; //18.8+0.01 returns 18.810000...2
     }
 
     protected double getPeriodLowBoundary(int period) {

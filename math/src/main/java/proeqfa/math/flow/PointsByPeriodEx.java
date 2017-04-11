@@ -50,7 +50,7 @@ public class PointsByPeriodEx extends PointsByPeriod {
 
             if (periodsAlign == PeriodsBoundaryAlignment.EXPAND) {
                 shorterPeriodSize = 0;
-                setDiapasonSize(customPeriodSize*customPeriodsCount);
+                setDiapasonSize(round(customPeriodSize * customPeriodsCount));
             }
 
         }
