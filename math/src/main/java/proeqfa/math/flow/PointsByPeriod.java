@@ -51,8 +51,8 @@ public class PointsByPeriod {
     }
 
     protected boolean checkValue(double value) {
-        double diapasonHigh = diapasonSize + MathUtils.getMinValueForScale(getCalcPrecision());
-        double diapasonLow = 0 - MathUtils.getMinValueForScale(getCalcPrecision());
+        double diapasonHigh = diapasonSize + getMinVal();
+        double diapasonLow = 0 - getMinVal();
 
         if ((diapasonSize == 0)
                 || (value > diapasonHigh)
@@ -70,7 +70,7 @@ public class PointsByPeriod {
     }
 
     public double getPeriodSize() {
-        periodSize = round(diapasonSize / getPeriodsCount(), calcPrecision);
+        periodSize = round(diapasonSize / getPeriodsCount());
         return periodSize;
     }
 
@@ -83,14 +83,14 @@ public class PointsByPeriod {
     }
 
     protected double getPeriodHighBoundary(int period) {
-        double r = round(getPeriodSize() * period, getCalcPrecision());
+        double r = round(getPeriodSize() * period);
         return period == getPeriodsCount() ?
-                r + MathUtils.getMinValueForScale(getCalcPrecision()) : r;
+                getDiapasonSize() + getMinVal() : r;
     }
 
-    protected double  getPeriodLowBoundary(int period) {
-        double r = round(getPeriodSize() * (period - 1), getCalcPrecision());//try 9*2.1 and see why round here
-        return period == 1 ? 0 - MathUtils.getMinValueForScale(getCalcPrecision()) : r;
+    protected double getPeriodLowBoundary(int period) {
+        double r = round(getPeriodSize() * (period - 1));//try 9*2.1 and see why round here
+        return period == 1 ? 0 - getMinVal() : r;
     }
 
     public int getPointsCountByPeriod(int period) {
@@ -113,6 +113,14 @@ public class PointsByPeriod {
 
     public double getDiapasonSize() {
         return diapasonSize;
+    }
+
+    protected double getMinVal() {
+        return MathUtils.getMinValueForScale(getCalcPrecision());
+    }
+
+    protected double round(double value) {
+        return round(value, getCalcPrecision());
     }
 
     /**

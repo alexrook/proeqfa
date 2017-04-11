@@ -26,7 +26,16 @@ public class PointsByPeriodExTest extends TestBase {
             11.9, 12.2, 13.91, 14.1
     };
 
-    PointsByPeriodEx doc_points, doc_points_auto, user_data01, user_data01_auto;
+    double[] user_data02_array = {
+            0.25, 0.71, 0.97, 1.5,
+            2.2, 2.9, 4.1, 4.7,
+            6.53
+    };
+
+
+    PointsByPeriodEx doc_points, doc_points_auto,
+            user_data01, user_data01_auto,
+            user_data02, user_data02_auto;
 
     @Override
     @Before
@@ -45,6 +54,13 @@ public class PointsByPeriodExTest extends TestBase {
         for (double point : user_data01_array) {
             user_data01.addPoint(point);
             user_data01_auto.addPoint(point);
+        }
+
+        user_data02 = new PointsByPeriodEx(7.4, 2);
+        user_data02_auto = new PointsByPeriodEx(7.4);
+        for (double point : user_data02_array) {
+            user_data02.addPoint(point);
+            user_data02_auto.addPoint(point);
         }
 
     }
@@ -251,5 +267,21 @@ public class PointsByPeriodExTest extends TestBase {
         }
     }
 
+    @Test
+    public void test_user_data02() {
+        for (PointsByPeriodEx instance : Arrays.asList(user_data02, user_data02_auto)) {
+            std_user_data02_tester(instance);
+        }
+    }
+
+    private void std_user_data02_tester(PointsByPeriod instance) {
+        assertEquals(9, instance.getPointsCount());
+        assertEquals(4, instance.getPeriodsCount());
+        assertEquals(1.85, instance.getPeriodSize(), 0d);
+        assertEquals(4, instance.getPointsCountByPeriod(1));
+        assertEquals(2, instance.getPointsCountByPeriod(2));
+        assertEquals(2, instance.getPointsCountByPeriod(3));
+        assertEquals(1, instance.getPointsCountByPeriod(4));
+    }
 
 }

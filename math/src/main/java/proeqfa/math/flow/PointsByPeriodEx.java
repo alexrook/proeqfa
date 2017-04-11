@@ -1,7 +1,5 @@
 package proeqfa.math.flow;
 
-import proeqfa.math.commons.MathUtils;
-
 /**
  * Created by moroz on 05.04.17.
  */
@@ -38,40 +36,38 @@ public class PointsByPeriodEx extends PointsByPeriod {
     }
 
     private void calculate() {
-        if (periodsAlign != PeriodsBoundaryAlignment.EXPAND) {
-            customPeriodsCount = (int) (getDiapasonSize() / customPeriodSize);
-            shorterPeriodSize = round(getDiapasonSize() - customPeriodSize * customPeriodsCount, getCalcPrecision());
-            if (shorterPeriodSize > 0) {
-                customPeriodsCount++;
-                if (periodsAlign == PeriodsBoundaryAlignment.NONE) {
-                    throw new IllegalArgumentException("unsupported boundary alignment for diapason="
-                            + getDiapasonSize()
-                            + ", period size=" + customPeriodSize);
-                }
+        customPeriodsCount = (int) (getDiapasonSize() / customPeriodSize);
+        shorterPeriodSize = round(getDiapasonSize() - customPeriodSize * customPeriodsCount);
+
+        if (shorterPeriodSize > 0) {
+            customPeriodsCount++;
+
+            if (periodsAlign == PeriodsBoundaryAlignment.NONE) {
+                throw new IllegalArgumentException("unsupported boundary alignment for diapason="
+                        + getDiapasonSize()
+                        + ", period size=" + customPeriodSize);
             }
-        } else {
-            //TODO
+
+            if (periodsAlign == PeriodsBoundaryAlignment.EXPAND) {
+                shorterPeriodSize = 0;
+                setDiapasonSize(customPeriodSize*customPeriodsCount);
+            }
+
         }
+
     }
 
     @Override
     protected double getPeriodHighBoundary(int period) {
         switch (periodsAlign) {
-            case HIGH: {
-                if (period == getPeriodsCount()) {
-                    return getDiapasonSize() + MathUtils.getMinValueForScale(getCalcPrecision());
-                }
-                return super.getPeriodHighBoundary(period);
-
-            }
             case LOW: {
                 double r = getPeriodSize() * (period - 1);
                 if (period == 1) {
-                    return round(shorterPeriodSize, getCalcPrecision());
-                } else if (period == getPeriodsCount()) {
-                    return round(shorterPeriodSize + r + MathUtils.getMinValueForScale(getCalcPrecision()), getCalcPrecision());
+                    return getShorterPeriodSize();
+                } else if (period < getPeriodsCount()) {
+                    return round(getShorterPeriodSize() + r);
                 } else {
-                    return round(shorterPeriodSize + r, getCalcPrecision());
+                    return super.getPeriodHighBoundary(period);
                 }
             }
             default:
@@ -85,9 +81,7 @@ public class PointsByPeriodEx extends PointsByPeriod {
         switch (periodsAlign) {
             case LOW: {
                 if (period > 1) {
-                    return round(shorterPeriodSize + getPeriodSize() * (period - 2) //diapason-shorter-other_periods
-                            , getCalcPrecision()
-                    );
+                    return round(getShorterPeriodSize() + getPeriodSize() * (period - 2)); //diapason - shorter - other_periods
                 }
                 return super.getPeriodLowBoundary(period);
             }
