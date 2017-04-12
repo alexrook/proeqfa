@@ -1,4 +1,4 @@
-allprojects  {
+allprojects {
     apply plugin: 'maven'
 
     group = 'proeqfa'
@@ -6,18 +6,18 @@ allprojects  {
 }
 
 subprojects {
-  apply plugin: 'java'
-  sourceCompatibility = 1.7
-  targetCompatibility = 1.7
-  tasks.withType(JavaCompile) {
-  	options.encoding = 'UTF-8'
-  }
+    apply plugin: 'java'
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
 
 
-  repositories {
-    mavenLocal()
-    maven { url "http://repository.jboss.org/nexus/content/groups/public/" }
-    maven { url "http://repo.maven.apache.org/maven2" }
-  }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "http://repository.jboss.org/nexus/content/groups/public/" }
+    }
 
 }
