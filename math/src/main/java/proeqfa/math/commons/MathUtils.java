@@ -29,4 +29,9 @@ public class MathUtils {
     public static double getMinValueForScale(int digitsAfterDecimalPoint) {
         return new BigDecimal(BigInteger.valueOf(1), digitsAfterDecimalPoint).doubleValue();
     }
+
+    public static double round(double value, int digitsAfterDecimalPoint) {
+        return MathUtils.round(value, digitsAfterDecimalPoint, BigDecimal.ROUND_HALF_UP);
+    }
+
 }

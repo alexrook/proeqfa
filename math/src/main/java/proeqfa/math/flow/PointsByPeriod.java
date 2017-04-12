@@ -120,7 +120,7 @@ public class PointsByPeriod {
     }
 
     protected double round(double value) {
-        return round(value, getCalcPrecision());
+        return MathUtils.round(value, getCalcPrecision());
     }
 
     /**
@@ -131,13 +131,9 @@ public class PointsByPeriod {
     public static int getPeriodCountBySturgesRule(int pointsCount) {
         double k = 1d;
         if (pointsCount > 0) {
-            k = round(1d + 3.3d * Math.log10(pointsCount), 0);
+            k = MathUtils.round(1d + 3.3d * Math.log10(pointsCount), 0);
         }
         return (int) k;
-    }
-
-    protected static double round(double value, int digitsAfterDecimalPoint) {
-        return MathUtils.round(value, digitsAfterDecimalPoint, BigDecimal.ROUND_HALF_UP);
     }
 
 
