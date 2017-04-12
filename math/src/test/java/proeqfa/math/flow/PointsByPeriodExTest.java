@@ -359,7 +359,7 @@ public class PointsByPeriodExTest extends TestBase {
     }
 
     @Test
-    public void test_user_data02_custom_period_size_expand() {
+    public void test_user_data02_custom_period_size_expand01() {
         for (PointsByPeriodEx instance : Arrays.asList(user_data02, user_data02_auto)) {
 
             assertEquals(7.4, instance.getDiapasonSize(), 0d);
@@ -382,6 +382,32 @@ public class PointsByPeriodExTest extends TestBase {
             assertEquals(6, instance.getPointsCountByPeriod(1));
             assertEquals(3, instance.getPointsCountByPeriod(2));
             assertEquals(0, instance.getPointsCountByPeriod(3));
+        }
+    }
+
+    @Test
+    public void test_user_data02_custom_period_size_expand02() {
+        for (PointsByPeriodEx instance : Arrays.asList(user_data02, user_data02_auto)) {
+
+            assertEquals(7.4, instance.getDiapasonSize(), 0d);
+
+            instance.setPeriodSize(3.3,
+                    PointsByPeriodEx.PeriodsBoundaryAlignment.EXPAND);
+
+            assertEquals(9, instance.getPointsCount());
+            assertEquals(3, instance.getPeriodsCount());
+            assertEquals(0, instance.getShorterPeriodSize(), 0d);
+            assertEquals(9.91, instance.getPeriodHighBoundary(3), 0d); //precision=2
+            assertEquals(6.6, instance.getPeriodLowBoundary(3), 0d);
+
+            instance.addPoint(9.91);
+
+            assertEquals(3.3, instance.getPeriodSize(), 0d);
+
+            //0.25 0.71 0.97 1.5 2.2 2.9 (1) 4.1  4.7  6.53 (2) 9.91  (3)     ->[[point]...] (period)
+            assertEquals(6, instance.getPointsCountByPeriod(1));
+            assertEquals(3, instance.getPointsCountByPeriod(2));
+            assertEquals(1, instance.getPointsCountByPeriod(3));
         }
     }
 
