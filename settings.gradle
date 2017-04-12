@@ -1,0 +1,4 @@
+rootProject.name = 'main'
+include ':math'
+
+project(':math').projectDir = "$rootDir/math" as File
