@@ -33,7 +33,7 @@ public class PointsByPeriodTest extends TestBase {
 //        out.println("precision=" + a.precision());
 //        out.println("scale=" + a.scale());
 //        out.println("unscaled= " + a.unscaledValue());
-        assertEquals(3.5, PointsByPeriod.round(3.5, 2), 0d);
+        assertEquals(3.5, MathUtils.round(3.5, 2), 0d);
         assertEquals(0.001, MathUtils.getMinValueForScale(3), 0d);
     }
 
