@@ -13,8 +13,7 @@ public class PointsByPeriod {
     private boolean autoPrecision;
     private double diapasonSize;
     private int calcPrecision;
-    private double periodSize;
-    private ArrayList<Double> points = new ArrayList<>(133);
+    private final ArrayList<Double> points = new ArrayList<>(133);
 
 
     public PointsByPeriod(double diapasonSize,
@@ -54,12 +53,9 @@ public class PointsByPeriod {
         double diapasonHigh = diapasonSize + getMinVal();
         double diapasonLow = 0 - getMinVal();
 
-        if ((diapasonSize == 0)
+        return !((diapasonSize == 0)
                 || (value > diapasonHigh)
-                || (value < diapasonLow)) {
-            return false;
-        }
-        return true;
+                || (value < diapasonLow));
     }
 
     private void setCalcPrecision(double point) {
@@ -70,8 +66,7 @@ public class PointsByPeriod {
     }
 
     public double getPeriodSize() {
-        periodSize = round(diapasonSize / getPeriodsCount());
-        return periodSize;
+        return round(diapasonSize / getPeriodsCount());
     }
 
     public int getPointsCount() {

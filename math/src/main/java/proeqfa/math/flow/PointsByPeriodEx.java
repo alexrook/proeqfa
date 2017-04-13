@@ -12,7 +12,7 @@ public class PointsByPeriodEx extends PointsByPeriod {
     private static final double NON_SET_PERIOD_SIZE = -1d;
     private static final int NON_SET_PERIOD_COUNT = -1;
 
-    PeriodsBoundaryAlignment periodsAlign = PeriodsBoundaryAlignment.NONE;
+    private PeriodsBoundaryAlignment periodsAlign = PeriodsBoundaryAlignment.NONE;
     private double customPeriodSize = NON_SET_PERIOD_SIZE, shorterPeriodSize = NON_SET_PERIOD_SIZE;
     private int customPeriodsCount = NON_SET_PERIOD_COUNT;
 

@@ -106,7 +106,7 @@ public class RankChain implements Iterable<RankChain.RankedObject> {
 
     }
 
-    private final List<RankedObject> rankedChain = new LinkedList();
+    private final List<RankedObject> rankedChain = new LinkedList<>();
 
     private double expertCompetenceFactor = 1;
 

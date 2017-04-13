@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class RankEstimation {
 
-    private EstimationMatrix estimationMatrix;
+    private final EstimationMatrix estimationMatrix;
 
 
     public RankEstimation(int rankedObjectsCount, ThreeLogicValues logicValues) {

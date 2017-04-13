@@ -10,8 +10,8 @@ import java.util.Arrays;
  */
 public class Array2DUtils {
 
-    public static double[][] EMPTY_DOUBLE_2D_ARRAY = new double[0][0];
-    public static Double[][] EMPTY_DOUBLE_OBJ_2D_ARRAY = new Double[0][0];
+    private static final double[][] EMPTY_DOUBLE_2D_ARRAY = new double[0][0];
+    private static final Double[][] EMPTY_DOUBLE_OBJ_2D_ARRAY = new Double[0][0];
 
     public static <T extends Number> double[][] toPrimitive(T[][] array) {
 

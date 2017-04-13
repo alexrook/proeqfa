@@ -14,7 +14,7 @@ public class RelCompetency {
     public enum Relation {
 
         APPROVE(1), REJECT(0);
-        private int val;
+        private final int val;
 
         Relation(int i) {
             val = i;
@@ -45,11 +45,13 @@ public class RelCompetency {
         }
     }
 
-    private Double[][] data;
+    private final Double[][] data;
     private int change;
     private final double evaluationRate;
-    boolean calculated = false;
-    private RealMatrix K, K_step_0,zero_K;
+    private boolean calculated = false;
+    private RealMatrix K;
+    private final RealMatrix K_step_0;
+    private final RealMatrix zero_K;
     private ICalcListener listener;
 
     public RelCompetency(int expertCount, double evaluationRate) {

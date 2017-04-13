@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class RankMatrix {
 
-    private List<RankChain> expertChains = new ArrayList<>(5);
+    private final List<RankChain> expertChains = new ArrayList<>(5);
 
     private int rankedObjectsCount;
 

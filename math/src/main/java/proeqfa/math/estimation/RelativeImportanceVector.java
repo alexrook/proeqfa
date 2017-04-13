@@ -12,7 +12,7 @@ import proeqfa.math.commons.ICalcListener;
  */
 public class RelativeImportanceVector {
 
-    public final RealMatrix zero_K;
+    private final RealMatrix zero_K;
     private final double evaluationRate;
     private final int objCount;
 
@@ -72,7 +72,7 @@ public class RelativeImportanceVector {
 
     }
 
-    public void checkMatrix(RealMatrix X) {
+    private void checkMatrix(RealMatrix X) {
 
         if ((X.getColumnDimension() != objCount) || (X.getRowDimension() != objCount)) {
             throw new IllegalArgumentException("estimation matrix has inappropriate size");

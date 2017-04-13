@@ -7,8 +7,8 @@ import org.apache.commons.math3.linear.RealMatrix;
  */
 public interface IRelativeImportanceVectorTestData extends IEstimationTestData {
 
-    public RealMatrix getExpectedRelativeImportanceVector();
-    public double getEvaluationRate();
+    RealMatrix getExpectedRelativeImportanceVector();
+    double getEvaluationRate();
      
     
 }
