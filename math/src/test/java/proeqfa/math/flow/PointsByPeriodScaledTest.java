@@ -51,7 +51,7 @@ public class PointsByPeriodScaledTest extends TestBase {
         doc_points_autoPrecision = new PointsByPeriodScaled();
         for (double point : doc_points_array) {
             doc_points.addPoint(point);
-//            doc_points_autoPrecision.addPoint(point);
+            doc_points_autoPrecision.addPoint(point);
         }
 
         user_data01 = new PointsByPeriodScaled();

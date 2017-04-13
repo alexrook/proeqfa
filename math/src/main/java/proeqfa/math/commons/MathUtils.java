@@ -41,12 +41,20 @@ public class MathUtils {
 
     /**
      * @param number
-     * @return The maximum number for the number of digits of a given number, i.e 93 => 10, 0.2 => 0.1 ...
+     * @return The minimum number for the number of digits of a given number, i.e 93 => 10, 0.2 => 0.1 ...
      */
-    public static double getMaxBitOfNumber(double number) {
+    public static double getMinHighBitOfNumber(double number) {
         BigDecimal bd = BigDecimal.valueOf(number);
         return Math.pow(10, (bd.precision() - bd.scale() - 1));
     }
 
+    public static void main(String[] args){
+        double i=.0032;
+        BigDecimal d=BigDecimal.valueOf(getMinHighBitOfNumber(i));
+        long k=(long) (i/d.doubleValue());
+        BigDecimal ret=d.multiply(BigDecimal.valueOf(k));
+        ret.setScale(d.scale(),BigDecimal.ROUND_HALF_UP);
+        System.out.println("d="+d+", k="+k +",k*d="+(ret.doubleValue()));
+    }
 
 }

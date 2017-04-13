@@ -25,11 +25,12 @@ public class PointsByPeriodScaled extends PointsByPeriodEx {
 
             diapason = point;
 
-            double mb = MathUtils.getMaxBitOfNumber(point);
+            double mb = MathUtils.getMinHighBitOfNumber(point);
 
             if (mb > diapasonNextStep) {
-                diapasonNextStep = mb;
-                diapason += diapasonNextStep;
+                diapasonNextStep = mb ;
+                diapason += diapasonNextStep*10;
+
             }
 
             setDiapasonSize(diapason);
