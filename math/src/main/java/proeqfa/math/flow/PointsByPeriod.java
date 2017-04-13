@@ -4,16 +4,17 @@ import proeqfa.math.commons.MathUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by moroz on 29.03.17.
  */
-public class PointsByPeriod {
+public class PointsByPeriod implements Iterable<Double> {
 
+    private final ArrayList<Double> points = new ArrayList<>(133);
     private boolean autoPrecision;
     private double diapasonSize;
     private int calcPrecision;
-    private final ArrayList<Double> points = new ArrayList<>(133);
 
 
     public PointsByPeriod(double diapasonSize,
@@ -29,12 +30,17 @@ public class PointsByPeriod {
         autoPrecision = true;
     }
 
-    protected void setDiapasonSize(double diapasonSize) {
-        if (diapasonSize >= 0) {
-            this.diapasonSize = diapasonSize;
-        } else {
-            this.diapasonSize = 0;
+    /**
+     * @param pointsCount число точек
+     * @return целое число периодов по правилу Стерджеса
+     * TODO:do you really need an integer number of periods?
+     */
+    public static int getPeriodCountBySturgesRule(int pointsCount) {
+        double k = 1d;
+        if (pointsCount > 0) {
+            k = MathUtils.round(1d + 3.3d * Math.log10(pointsCount), 0);
         }
+        return (int) k;
     }
 
     public void addPoint(double point) {
@@ -56,13 +62,6 @@ public class PointsByPeriod {
         return !((diapasonSize == 0)
                 || (value > diapasonHigh)
                 || (value < diapasonLow));
-    }
-
-    private void setCalcPrecision(double point) {
-        if (autoPrecision) {
-            BigDecimal p = BigDecimal.valueOf(point);
-            calcPrecision = calcPrecision < p.scale() ? p.scale() : calcPrecision;
-        }
     }
 
     public double getPeriodSize() {
@@ -106,8 +105,23 @@ public class PointsByPeriod {
         return calcPrecision;
     }
 
+    private void setCalcPrecision(double point) {
+        if (autoPrecision) {
+            BigDecimal p = BigDecimal.valueOf(point);
+            calcPrecision = calcPrecision < p.scale() ? p.scale() : calcPrecision;
+        }
+    }
+
     public double getDiapasonSize() {
         return diapasonSize;
+    }
+
+    protected void setDiapasonSize(double diapasonSize) {
+        if (diapasonSize >= 0) {
+            this.diapasonSize = diapasonSize;
+        } else {
+            this.diapasonSize = 0;
+        }
     }
 
     protected double getMinVal() {
@@ -118,17 +132,9 @@ public class PointsByPeriod {
         return MathUtils.round(value, getCalcPrecision());
     }
 
-    /**
-     * @param pointsCount число точек
-     * @return целое число периодов по правилу Стерджеса
-     * TODO:do you really need an integer number of periods?
-     */
-    public static int getPeriodCountBySturgesRule(int pointsCount) {
-        double k = 1d;
-        if (pointsCount > 0) {
-            k = MathUtils.round(1d + 3.3d * Math.log10(pointsCount), 0);
-        }
-        return (int) k;
+    @Override
+    public Iterator<Double> iterator() {
+        return points.iterator();
     }
 
 
