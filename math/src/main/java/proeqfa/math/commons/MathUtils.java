@@ -48,13 +48,17 @@ public class MathUtils {
         return Math.pow(10, (bd.precision() - bd.scale() - 1));
     }
 
-    public static void main(String[] args){
-        double i=.0032;
-        BigDecimal d=BigDecimal.valueOf(getMinHighBitOfNumber(i));
-        long k=(long) (i/d.doubleValue());
-        BigDecimal ret=d.multiply(BigDecimal.valueOf(k));
-        ret.setScale(d.scale(),BigDecimal.ROUND_HALF_UP);
-        System.out.println("d="+d+", k="+k +",k*d="+(ret.doubleValue()));
+    /**
+     * @param value
+     * @return rounds value to high bits, 12 => 10, 123=>100, 0.0023 =>0.002
+     */
+    public static double roundToHighBit(double value) {
+        BigDecimal d = BigDecimal.valueOf(getMinHighBitOfNumber(value));
+        long k = (long) (value / d.doubleValue());
+        BigDecimal ret = d.multiply(BigDecimal.valueOf(k));
+        ret.setScale(d.scale(), BigDecimal.ROUND_HALF_UP);
+        return ret.doubleValue();
+
     }
 
 }

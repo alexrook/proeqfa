@@ -36,11 +36,15 @@ public class PointsByPeriodScaledTest extends TestBase {
             0.003, 0.01, 0.009, 0.00134
     };
 
+    double[] user_data04_array = {
+            12.0078, 100.003, 100.01, 101.5, 107.3
+    };
 
     PointsByPeriodScaled doc_points, doc_points_autoPrecision,
             user_data01, user_data01_autoPrecision,
             user_data02, user_data02_autoPrecision,
-            user_data03, user_data03_autoPrecision;
+            user_data03, user_data03_autoPrecision,
+            user_data04, user_data04_autoPrecision;
 
 
     @Override
@@ -75,6 +79,12 @@ public class PointsByPeriodScaledTest extends TestBase {
             user_data03_autoPrecision.addPoint(point);
         }
 
+        user_data04 = new PointsByPeriodScaled();
+        user_data04_autoPrecision = new PointsByPeriodScaled(3);
+        for (double point : user_data04_array) {
+            user_data04.addPoint(point);
+            user_data04_autoPrecision.addPoint(point);
+        }
     }
 
     @Override
@@ -86,16 +96,46 @@ public class PointsByPeriodScaledTest extends TestBase {
     @Test
     public void test_doc_data() {
         for (PointsByPeriodEx instance : Arrays.asList(doc_points, doc_points_autoPrecision)) {
-            assertEquals(16, instance.getPointsCount());
+            assertEquals(doc_points_array.length, instance.getPointsCount());
+            //max(doc_points_array)=19.9 minHighBit=10, roundToHighBit(19.9)=10 => 10+10=20
+            assertEquals(20, instance.getDiapasonSize(), 0d);
+        }
+    }
+
+    @Test
+    public void test_user_data01() {
+        for (PointsByPeriodEx instance : Arrays.asList(user_data01, user_data01_autoPrecision)) {
+            assertEquals(user_data01_array.length, instance.getPointsCount());
             assertEquals(5, instance.getPeriodsCount());
-            System.out.println(instance.getDiapasonSize());
-//            assertEquals(4d, instance.getPeriodSize(), 0d);
-//            //see 10.1 doc diagram
-//            assertEquals(3, instance.getPointsCountByPeriod(1));
-//            assertEquals(2, instance.getPointsCountByPeriod(2));
-//            assertEquals(4, instance.getPointsCountByPeriod(3));
-//            assertEquals(3, instance.getPointsCountByPeriod(4));
-//            assertEquals(4, instance.getPointsCountByPeriod(5));
+            //max(user_data01_array)=14.1 minHighBit=10, roundToHighBit(14.1)=10 => 10+10=20
+            assertEquals(20, instance.getDiapasonSize(), 0d);
+        }
+    }
+
+    @Test
+    public void test_user_data02() {
+        for (PointsByPeriodEx instance : Arrays.asList(user_data02, user_data02_autoPrecision)) {
+            assertEquals(user_data02_array.length, instance.getPointsCount());
+            //max(user_data02_array)=6.53 minHighBit=1, roundToHighBit(6.53)=7 => 6+1=7
+            assertEquals(7, instance.getDiapasonSize(), 0d);
+        }
+    }
+
+    @Test
+    public void test_user_data03() {
+        for (PointsByPeriodEx instance : Arrays.asList(user_data03, user_data03_autoPrecision)) {
+            assertEquals(user_data03_array.length, instance.getPointsCount());
+            //max(user_data03_array)=0.01 minHighBit=0.01, roundToHighBit(0.01)=0.01,so 0.01+0.01=0.02
+            assertEquals(0.02, instance.getDiapasonSize(), 0d);
+        }
+    }
+
+    @Test
+    public void test_user_data04() {
+        for (PointsByPeriodEx instance : Arrays.asList(user_data04, user_data04_autoPrecision)) {
+            assertEquals(user_data04_array.length, instance.getPointsCount());
+            //max(user_data04_array)=107.3 minHighBit=100, roundToHighBit(107.3)=100,so 100+100=200
+            assertEquals(200, instance.getDiapasonSize(), 0d);
         }
     }
 
