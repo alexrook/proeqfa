@@ -8,6 +8,7 @@ import proeqfa.math.commons.MathUtils;
 public class PointsByPeriodScaled extends PointsByPeriodEx {
 
     private double diapasonNextStep = -1;
+    private boolean autoExpandDiapason = true;
 
     public PointsByPeriodScaled() {
         super(0);
@@ -19,21 +20,29 @@ public class PointsByPeriodScaled extends PointsByPeriodEx {
 
     @Override
     public void addPoint(double point) {
-        double diapason = getDiapasonSize();
+        if (autoExpandDiapason) {
+            double diapason = getDiapasonSize();
 
-        if (diapason < point) {
+            if (diapason < point) {
 
-            double mb = MathUtils.getMinHighBitOfNumber(point);
+                double mb = MathUtils.getMinHighBitOfNumber(point);
 
-            diapasonNextStep = mb > diapasonNextStep ? mb : diapasonNextStep;
+                diapasonNextStep = mb > diapasonNextStep ? mb : diapasonNextStep;
 
-            diapason = MathUtils.roundToHighBit(point);
+                diapason = MathUtils.roundToHighBit(point);
 
-            diapason += diapasonNextStep;
+                diapason += diapasonNextStep;
 
-            setDiapasonSize(diapason);
+                setDiapasonSize(diapason);
+            }
         }
 
         super.addPoint(point);
+    }
+
+
+    public void setDiapasonHighBoundary(double diapasonBoundary) {
+        autoExpandDiapason = false;
+        setDiapasonSize(diapasonBoundary);
     }
 }
